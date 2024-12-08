@@ -2,6 +2,17 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+// const runMigrations = require(path.join(__dirname, 'DB/migrations'));
+// const runMigrations = require('./DB/migrations');
+// import  runMigrations  from './DB/migrations';
+// import  setupIPCHandlers  from './eventos';
+
+// const setupIPCHandlers = require('./eventos');
+// const setupIPCHandlers = require(path.join(__dirname, 'eventos'));
+// import { join } from 'path';
+
+// const runMigrations = require(join(__dirname, 'DB', 'migrations'));
+
 
 function createWindow() {
   // Create the browser window.
@@ -51,7 +62,8 @@ app.whenReady().then(() => {
 
   // IPC test
   ipcMain.on('ping', () => console.log('pong'))
-
+  // setupIPCHandlers();
+  // runMigrations();
   createWindow()
 
   app.on('activate', function () {

@@ -16,5 +16,8 @@ export default defineConfig({
       }
     },
     plugins: [react()]
-  }
+  },
+  // assetsInclude: ['src/main/DB/**'], // Incluye la carpeta DB
+  assetsInclude: ['**/src/main/DB/**/*'],
+
 })
