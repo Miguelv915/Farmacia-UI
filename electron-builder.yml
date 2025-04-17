@@ -1,5 +1,5 @@
-appId: com.electron.app
-productName: electron-app
+appId: com.farmaciaUI.app
+productName: farmaciaUI-app
 directories:
   buildResources: build
 files:
@@ -11,7 +11,8 @@ files:
 asarUnpack:
   - resources/**
 win:
-  executableName: electron-app
+  executableName: farmaciaUI-app
+  icon: build/icon_caja.ico
 nsis:
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}

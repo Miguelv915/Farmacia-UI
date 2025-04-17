@@ -45,8 +45,8 @@ export default function PageViewsBarChart() {
           xAxis={[
             {
               scaleType: 'band',
-              categoryGapRatio: 0.5,
-              data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+              categoryGapRatio: 0.1,
+              data: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul'],
             },
           ]}
           series={[

@@ -1,10 +1,12 @@
 import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
-import icon from '../../resources/icon.png?asset'
+import icon from '../../resources/icon_caja.png?asset'
 // const runMigrations = require(path.join(__dirname, 'DB/migrations'));
 // const runMigrations = require('./DB/migrations');
-// import  runMigrations  from './DB/migrations';
+import  runMigrations  from './DB/migrations'; // migraciones
+// import setupIPCHandlers from './eventos';
+import {registerProductoHandlers} from './handlers/producto-Handler';
 // import  setupIPCHandlers  from './eventos';
 
 // const setupIPCHandlers = require('./eventos');
@@ -12,16 +14,16 @@ import icon from '../../resources/icon.png?asset'
 // import { join } from 'path';
 
 // const runMigrations = require(join(__dirname, 'DB', 'migrations'));
-
+// runMigrationss ();
 
 function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 900,
     height: 670,
-    show: false,
-    autoHideMenuBar: true,
-    ...(process.platform === 'linux' ? { icon } : {}),
+    // show: false,
+    // autoHideMenuBar: true,
+    ...(process.platform === 'linux' ? { icon} : {icon}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false
@@ -62,7 +64,7 @@ app.whenReady().then(() => {
 
   // IPC test
   ipcMain.on('ping', () => console.log('pong'))
-  // setupIPCHandlers();
+  registerProductoHandlers();
   // runMigrations();
   createWindow()
 

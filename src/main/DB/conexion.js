@@ -1,28 +1,17 @@
-const sqlite3 = require('sqlite3').verbose();
-const path = require('path');
-const { app } = require('electron');
+// database.js
+// const Database = require('better-sqlite3');
 
-// Ruta de almacenamiento persistente
-const dbPath = path.join(app.getPath('userData'), 'database.db');
+import  Database  from 'better-sqlite3';
+import  path  from 'path';
+// const path = require('path');
 
-// Crear o abrir la base de datos
-const db = new sqlite3.Database(dbPath, (err) => {
-  if (err) {
-    console.error('Error al conectar con la base de datos:', err.message);
-  } else {
-    console.log(`Base de datos conectada en: ${dbPath}`);
-  }
-});
+// Ruta al archivo SQLite
+const dbPath = path.join(__dirname, 'data_Farmacia.db');
 
-// Crear una tabla de ejemplo
-db.run(`
-  CREATE TABLE IF NOT EXISTS usuarios (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nombre TEXT NOT NULL,
-    email TEXT NOT NULL UNIQUE
-  )
-`);
+console.log("RUTA::",__dirname, 'data_Farmacia.db' );
 
+const db = new Database(dbPath);
+
+// Exportar la instancia
 export default db; 
-
-// module.exports = db;
+// module.exports = {db};

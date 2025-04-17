@@ -52,7 +52,7 @@ export default function MainGrid() {
       <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
         Overviewnmom
       </Typography>
-      {/* <Grid
+      <Grid
         container
         spacing={2}
         columns={12}
@@ -72,7 +72,7 @@ export default function MainGrid() {
         <Grid size={{ xs: 12, md: 6 }}>
           <PageViewsBarChart />
         </Grid>
-      </Grid> */}
+      </Grid>
       <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
         Details
       </Typography>

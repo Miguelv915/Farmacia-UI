@@ -7,7 +7,26 @@ import ProTip from './ProTip';
 import Copyright from './Copyright';
 import Dashboard from './Extras/dashboard/Dashboard.jsx';
 
-const { ipcRenderer } = window.require('electron');
+// const { ipcRenderer } = window.require('electron');
+const producto = {
+  nombre: 'Teclado Mecánico',
+  descripcion: 'Con retroiluminación RGB',
+  precioCompra: 30,
+  precioVenta: 50,
+  cantidadStock: 10,
+  utilidadPercibida: 20
+};
+
+const insertar = async () => {
+  const res = await window.api.producto.insertar(producto);
+  if (res.success) {
+    console.log('Producto insertado con ID:', res.id);
+  } else {
+    console.error('Error:', res.error);
+  }
+};
+
+insertar();
 
 // Insertar usuario
 async function agregarUsuario() {
@@ -25,16 +44,19 @@ async function listarUsuarios() {
 }
 export default function App() {
   return (
-    <Container maxWidth="sm">
-      <Box sx={{ my: 4 }}>
-        <Typography variant="h4" component="h1" sx={{ mb: 2 }}>
-          Material UI Vite.js example
-        </Typography>
-        <ProTip />
-        <Copyright />
-      </Box>
-    </Container>
-    // <Dashboard/>
+    <>
+      {/* <Container maxWidth="sm">
+       <Box sx={{ my: 4 }}>
+         <Typography variant="h4" component="h1" sx={{ mb: 2 }}>
+           Material UI Vite.js example
+         </Typography>
+         <ProTip />
+         <Copyright />
+       </Box>
+     </Container> */}
+    <Dashboard/>
 
+    </>
+   
   );
 }
