@@ -1,62 +1,92 @@
 
+
 import * as React from 'react';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
+import { HashRouter, Routes, Route } from 'react-router-dom';
+import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import ProTip from './ProTip';
-import Copyright from './Copyright';
-import Dashboard from './Extras/dashboard/Dashboard.jsx';
+import Stack from '@mui/material/Stack';
+import MainGrid from './Extras/dashboard/components/MainGrid';
+import SideMenu from './Extras/dashboard/components/SideMenu';
+import AppTheme from './Extras/shared-theme/AppTheme';
+import { styled } from '@mui/system';
+import Grid from '@mui/material/Grid2';
+import {
+  chartsCustomizations,
+  dataGridCustomizations,
+  datePickersCustomizations,
+  treeViewCustomizations,
+} from './Extras/dashboard/theme/customizations';
+import { ComponenteArticulos } from '../view/articulo';
+import NotificarUsuario from '../view/alerta';
+import AppNavbar from './Extras/dashboard/components/AppNavbar';
+import Header from './Extras/dashboard/components/Header';
+import { CssBaseline } from '@mui/material';
 
-// const { ipcRenderer } = window.require('electron');
-const producto = {
-  nombre: 'Teclado Mecánico',
-  descripcion: 'Con retroiluminación RGB',
-  precioCompra: 30,
-  precioVenta: 50,
-  cantidadStock: 10,
-  utilidadPercibida: 20
+const xThemeComponents = {
+  ...chartsCustomizations,
+  ...dataGridCustomizations,
+  ...datePickersCustomizations,
+  ...treeViewCustomizations,
 };
 
-const insertar = async () => {
-  const res = await window.api.producto.insertar(producto);
-  if (res.success) {
-    console.log('Producto insertado con ID:', res.id);
-  } else {
-    console.error('Error:', res.error);
-  }
-};
+const FormGrid = styled(Grid)(() => ({
+  display: 'flex',
+  flexDirection: 'column',
+}));
 
-insertar();
+export default function Dashboard(props) {
 
-// Insertar usuario
-async function agregarUsuario() {
-  const response = await ipcRenderer.invoke('insertar-usuario', {
-    nombre: 'Juan Pérez',
-    email: 'juan.perez@example.com',
-  });
-  console.log(response);
-}
-
-// Obtener usuarios
-async function listarUsuarios() {
-  const response = await ipcRenderer.invoke('obtener-usuarios');
-  console.log(response.usuarios);
-}
-export default function App() {
   return (
     <>
-      {/* <Container maxWidth="sm">
-       <Box sx={{ my: 4 }}>
-         <Typography variant="h4" component="h1" sx={{ mb: 2 }}>
-           Material UI Vite.js example
-         </Typography>
-         <ProTip />
-         <Copyright />
-       </Box>
-     </Container> */}
-    <Dashboard/>
+      <AppTheme {...props} themeComponents={xThemeComponents}>
+        <CssBaseline enableColorScheme />
+        <Box sx={{ display: 'flex' }}>
+          <HashRouter>
+            <SideMenu />
+
+            <AppNavbar />
+            {/* Main content */}
+            <Box
+              component="main"
+              sx={(theme) => ({
+                flexGrow: 1,
+                backgroundColor: theme.vars
+                  ? `rgba(${theme.vars.palette.background.defaultChannel} / 1)`
+                  : alpha(theme.palette.background.default, 1),
+                overflow: 'auto',
+              })}
+            >
+              <Stack
+                spacing={2}
+                sx={{
+                  alignItems: 'center',
+                  mx: 3,
+                  pb: 5,
+                  mt: { xs: 8, md: 0 },
+                }}
+              >
+                {/*  CABECERA */}
+                <Header />
+                {/* Componente de graficos  */}
+                {/* <MainGrid />  */}
+
+                <Routes>
+                  <Route path="/" element={<MainGrid />} />
+                  <Route path="/articulo" element={<ComponenteArticulos />} />
+                  <Route path="/alerta" element={<NotificarUsuario />} />
+                </Routes>
+
+
+              </Stack>
+            </Box>
+          </HashRouter >
+
+        </Box>
+      </AppTheme>
 
     </>
-   
+
   );
 }
+
+

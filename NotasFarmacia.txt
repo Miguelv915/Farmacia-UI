@@ -1,0 +1,3 @@
+
+
+Tener cuidado con la depdendecia de la  la limbreria de componentes, usa la version 7 creo 

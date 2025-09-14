@@ -10,11 +10,12 @@ import { electronAPI } from '@electron-toolkit/preload'
 
 
 const api = {
-
+  
   producto: {
     insertar: (data) => ipcRenderer.invoke('insertar-producto', data),
-    // eliminar: (id) => ipcRenderer.invoke('eliminar-producto', id),
-    // editar: (data) => ipcRenderer.invoke('editar-producto', data)
+    listar: () => ipcRenderer.invoke('listar-productos'),
+    eliminar: (id) => ipcRenderer.invoke('eliminar-producto',id),
+    actulizar: (data) => ipcRenderer.invoke('actualizar-producto',data),
   },
 
 }

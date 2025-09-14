@@ -27,5 +27,19 @@
     "titleBar.inactiveBackground": "#21573299",
     "titleBar.inactiveForeground": "#e7e7e799"
   },
-  "peacock.color": "#215732"
+  "peacock.color": "#215732",
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "driver": "SQLite",
+      "database": "${workspaceFolder:Farmacia-UI}/out/main/data_Farmacia.db",
+      "name": "data_Farmacia"
+    },
+    {
+      "previewLimit": 50,
+      "driver": "SQLite",
+      "database": "data_Farmacia",
+      "name": "data_Farmacia"
+    }
+  ]
 }

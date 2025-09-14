@@ -42,9 +42,9 @@ function runMigrations() {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       nombre TEXT NOT NULL,
       descripcion TEXT NOT NULL,
-      precio_compra TEXT UNIQUE NOT NULL,
-      precio_venta TEXT UNIQUE NOT NULL,
-      cantidad_Stock TEXT UNIQUE NOT NULL
+      precio_compra TEXT  NOT NULL,
+      precio_venta TEXT  NOT NULL,
+      cantidad_Stock TEXT  NOT NULL
 
     )
   `).run();
@@ -70,18 +70,6 @@ function runMigrations() {
   );
 `);
 
-  // Tabla Producto
-  db.exec(`
-  CREATE TABLE IF NOT EXISTS Producto (
-    idProducto INTEGER PRIMARY KEY AUTOINCREMENT,
-    nombre TEXT,
-    descripcion TEXT,
-    precioCompra REAL,
-    precioVenta REAL,
-    cantidadStock INTEGER,
-    utilidadPercibida REAL
-  );
-`);
 
   // Tabla Factura
   db.exec(`
@@ -125,10 +113,68 @@ function runMigrations() {
 `);
 
 
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS categorias (
+        idCategoria INTEGER PRIMARY KEY AUTOINCREMENT,
+        nombre TEXT NOT NULL,
+        descripcion TEXT
+    );
+`);
+
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS compras (
+      idcompras INTEGER PRIMARY KEY AUTOINCREMENT,
+      proveedor_id INTEGER NOT NULL,
+      fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
+      total REAL NOT NULL,
+      FOREIGN KEY (proveedor_id) REFERENCES Proveedor(idProveedor)
+    );
+`);
+
+db.exec(`
+  CREATE TABLE IF NOT EXISTS detalle_compras (
+    idDetalle_compras INTEGER PRIMARY KEY AUTOINCREMENT,
+    compra_id INTEGER NOT NULL,
+    producto_id INTEGER NOT NULL,
+    cantidad INTEGER NOT NULL,
+    precio_compra REAL NOT NULL,
+    subtotal REAL NOT NULL,
+    FOREIGN KEY (compra_id) REFERENCES compras(idcompras),
+    FOREIGN KEY (producto_id) REFERENCES producto(id)
+);
+`);
+
+db.exec(`
+CREATE TABLE IF NOT EXISTS venta (
+    idVenta INTEGER PRIMARY KEY AUTOINCREMENT,
+    fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
+    total REAL NOT NULL
+)
+`);
+
+db.exec(`
+CREATE TABLE IF NOT EXISTS detalle_ventas (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    venta_id INTEGER NOT NULL,
+    producto_id INTEGER NOT NULL,
+    cantidad INTEGER NOT NULL,
+    precio_unitario REAL NOT NULL,
+    subtotal REAL NOT NULL,
+    FOREIGN KEY (venta_id) REFERENCES venta(idVenta),
+    FOREIGN KEY (producto_id) REFERENCES producto(id)
+);
+`);
+
+
+
+
+
 }
 
 try {
   runMigrations()
+  console.log("Se ejcuto las migracioens");
+  
 } catch (error) {
 
   console.log("Ocurri un erro::", error);
