@@ -2,6 +2,9 @@ import { alpha } from '@mui/material/styles';
 import { gray, orange } from '../themePrimitives';
 
 /* eslint-disable import/prefer-default-export */
+
+// aqui de se modifican el estilo de las alertas 
+
 export const feedbackCustomizations = {
   MuiAlert: {
     styleOverrides: {
