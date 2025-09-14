@@ -14,6 +14,8 @@ import AppTheme from '../shared-theme/AppTheme';
 
 export default function MarketingPage(props) {
   return (
+    <>
+    
     <AppTheme {...props}>
       <CssBaseline enableColorScheme />
       <AppAppBar />
@@ -33,5 +35,7 @@ export default function MarketingPage(props) {
         <Footer />
       </div>
     </AppTheme>
+    </>
+
   );
 }

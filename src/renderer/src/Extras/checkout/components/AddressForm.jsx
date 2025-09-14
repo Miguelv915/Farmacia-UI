@@ -1,42 +1,18 @@
 import * as React from 'react';
-import { Outlet } from "react-router-dom"
-import { alpha } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import AppNavbar from './components/AppNavbar';
-import Header from './components/Header';
-import MainGrid from './components/MainGrid';
-import SideMenu from './components/SideMenu';
-import AppTheme from '../shared-theme/AppTheme';
+
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
 import Grid from '@mui/material/Grid2';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import { styled } from '@mui/system';
-import {
-  chartsCustomizations,
-  dataGridCustomizations,
-  datePickersCustomizations,
-  treeViewCustomizations,
-} from './theme/customizations';
-import { Route, Router, Routes } from 'react-router-dom';
-import { ComponenteArticulos } from '../../../view/articulo';
-
-const xThemeComponents = {
-  ...chartsCustomizations,
-  ...dataGridCustomizations,
-  ...datePickersCustomizations,
-  ...treeViewCustomizations,
-};
 
 const FormGrid = styled(Grid)(() => ({
   display: 'flex',
   flexDirection: 'column',
 }));
 
- function AddressForm() {
+export default function AddressForm() {
   return (
     <Grid container spacing={3}>
       <FormGrid size={{ xs: 12, md: 6 }}>
@@ -156,69 +132,5 @@ const FormGrid = styled(Grid)(() => ({
         />
       </FormGrid>
     </Grid>
-  );
-}
-
-const renderContent = () => {
-  switch (selectedView) {
-    case 'Analytics':
-      return <AnalyticsView />;
-    case 'Clients':
-      return <ClientsView />;
-    case 'Tasks':
-      return <TasksView />;
-    default:
-      return <div>Selecciona una vista</div>;
-  }
-};
-
-
-export default function Dashboard(props) {
-  return (
-    <AppTheme {...props} themeComponents={xThemeComponents}>
-      <CssBaseline enableColorScheme />
-      <Box sx={{ display: 'flex' }}>
-        <SideMenu />
-        <AppNavbar />
-        {/* Main content */}
-        <Box
-          component="main"
-          sx={(theme) => ({
-            flexGrow: 1,
-            backgroundColor: theme.vars
-              ? `rgba(${theme.vars.palette.background.defaultChannel} / 1)`
-              : alpha(theme.palette.background.default, 1),
-            overflow: 'auto',
-          })}
-        >
-          <Stack
-            spacing={2}
-            sx={{
-              alignItems: 'center',
-              mx: 3,
-              pb: 5,
-              mt: { xs: 8, md: 0 },
-            }}
-          >
-          {/*  CABECERA */}
-            <Header /> 
-            {/* Componente de graficos  */}
-            {/* <MainGrid />  */}
-
-            {/* <AddressForm></AddressForm> */}
-                {/* <Routes>
-                  <Route path="/e" element={<> holasd asd</>} />
-                  <Route path="/clients" element={<MainGrid />} />
-                  <Route path="/" element={<AddressForm />} />
-                  <Route path="/articulo" element={<ComponenteArticulos />} />
-                </Routes> */}
-              
-              <Outlet />
-
-
-          </Stack>
-        </Box>
-      </Box>
-    </AppTheme>
   );
 }
