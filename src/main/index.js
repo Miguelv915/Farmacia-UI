@@ -7,6 +7,8 @@ import icon from '../../resources/icon_caja.png?asset'
 import  runMigrations  from './DB/migrations'; // migraciones
 // import setupIPCHandlers from './eventos';
 import {registerProductoHandlers} from './handlers/producto-Handler';
+import { registerProveedorHandlers } from './handlers/proveedor-Handler';
+import { registerClienteHandlers } from './handlers/cliente-Handler';
 // import  setupIPCHandlers  from './eventos';
 
 // const setupIPCHandlers = require('./eventos');
@@ -65,6 +67,8 @@ app.whenReady().then(() => {
   // IPC test
   ipcMain.on('ping', () => console.log('pong'))
   registerProductoHandlers();
+  registerProveedorHandlers();
+  registerClienteHandlers();
   // runMigrations();
   createWindow()
 

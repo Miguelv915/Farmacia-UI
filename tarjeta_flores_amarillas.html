@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Ti - Día de las Flores Amarillas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #F5E6D3 0%, #E8D7C5 50%, #F5E6D3 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Georgia', serif;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Girasoles pequeños flotantes alrededor */
+        .floating-sunflower {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.3;
+            animation: floatAround 8s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes floatAround {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.3; }
+            25% { transform: translateY(-15px) rotate(5deg); opacity: 0.5; }
+            50% { transform: translateY(-8px) rotate(-3deg); opacity: 0.4; }
+            75% { transform: translateY(-12px) rotate(4deg); opacity: 0.45; }
+        }
+
+        .floating-sunflower:nth-child(1) { top: 10%; left: 15%; animation-delay: 0s; font-size: 2.5rem; }
+        .floating-sunflower:nth-child(2) { top: 15%; right: 20%; animation-delay: 1.5s; font-size: 3rem; }
+        .floating-sunflower:nth-child(3) { top: 30%; left: 8%; animation-delay: 3s; font-size: 2.2rem; }
+        .floating-sunflower:nth-child(4) { top: 25%; right: 12%; animation-delay: 2s; font-size: 2.7rem; }
+        .floating-sunflower:nth-child(5) { bottom: 25%; left: 12%; animation-delay: 4s; font-size: 2.8rem; }
+        .floating-sunflower:nth-child(6) { bottom: 20%; right: 18%; animation-delay: 0.5s; font-size: 2.4rem; }
+        .floating-sunflower:nth-child(7) { top: 50%; left: 5%; animation-delay: 2.5s; font-size: 2.3rem; }
+        .floating-sunflower:nth-child(8) { top: 60%; right: 8%; animation-delay: 3.5s; font-size: 2.9rem; }
+        .floating-sunflower:nth-child(9) { bottom: 40%; left: 20%; animation-delay: 1s; font-size: 2.1rem; }
+        .floating-sunflower:nth-child(10) { bottom: 35%; right: 25%; animation-delay: 4.5s; font-size: 2.6rem; }
+        .floating-sunflower:nth-child(11) { top: 40%; left: 25%; animation-delay: 5s; font-size: 2rem; }
+        .floating-sunflower:nth-child(12) { top: 70%; right: 30%; animation-delay: 1.8s; font-size: 2.7rem; }
+
+        .card-container {
+            background: linear-gradient(135deg, #FFF8E1 0%, #FFFDE7 50%, #F5E6D3 100%);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(244, 196, 48, 0.3);
+            /* border: 1px solid transparent; */
+            max-width: 400px;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            z-index: 10;
+        }
+
+        .card-container::before {
+            content: "🌻🌿🌻🌿🌻🌿🌻🌿🌻🌿🌻🌿🌻🌿🌻🌿🌻🌿🌻🌿🌻🌿🌻🌿🌻🌿🌻🌿🌻🌿🌻🌿🌻🌿🌻🌿🌻🌿🌻";
+            position: absolute;
+            top: 10px;
+            left: -1px;
+            width: 20px;
+            height: 100%;
+            font-size: 1rem;
+            color: #F4C430;
+            z-index: -1;
+            line-height: 1.2;
+            word-wrap: break-word;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .card-container::after {
+            content: "🌻🌿🌻🌿🌻🌿🌻🌿🌻🌿🌻🌿🌻🌿🌻🌿🌻🌿🌻🌿🌻🌿🌻🌿🌻🌿🌻🌿🌻🌿🌻🌿🌻🌿🌻🌿🌻🌿🌻";
+            position: absolute;
+            top: 10px;
+            left: -10px;
+            right: -10px;
+            height: 20px;
+            font-size: 1rem;
+            color: #F4C430;
+            z-index: -1;
+            white-space: nowrap;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .card-content {
+            padding: 40px 30px;
+            text-align: left;
+        }
+
+        .title {
+            font-size: 2.8rem;
+            color: #B8860B;
+            margin-bottom: 15px;
+            font-family: 'Brush Script MT', cursive;
+            font-weight: normal;
+            text-shadow: 1px 1px 2px rgba(244, 196, 48, 0.3);
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .message {
+            color: #555;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            text-align: justify;
+        }
+
+        .features {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .tulips-decoration {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            gap: 5px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .feature-icon {
+            font-size: 1.1rem;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn {
+            background: #F4C430;
+            color: #333;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-family: 'Georgia', serif;
+        }
+
+        .btn:hover {
+            background: #E6B800;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(244, 196, 48, 0.3);
+        }
+
+        .btn-secondary {
+            background: #FFD700;
+        }
+
+        .btn-secondary:hover {
+            background: #FFC300;
+        }
+
+
+        /* Modal para mostrar mensaje completo */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #FFF8E1 0%, #FFFDE7 50%, #F5E6D3 100%);
+            margin: 5% auto;
+            padding: 40px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 40px rgba(244, 196, 48, 0.3);
+            border: 8px solid transparent;
+            border-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 20"><text y="15" font-size="12" fill="%23F4C430">🌻🌿🌻🌿🌻🌿🌻🌿🌻🌿🌻🌿🌻🌿🌻🌿🌻🌿🌻🌿</text></svg>') 8 repeat;
+            position: relative;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-content::before {
+            content: "🌻 🌿 🌻 🌿 🌻 🌿 🌻 🌿 🌻 🌿 🌻 🌿 🌻 🌿 🌻 🌿 🌻 🌿 🌻 🌿 🌻 🌿 🌻 🌿 🌻 🌿 🌻 🌿 🌻 🌿 🌻 🌿";
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            right: -15px;
+            bottom: -15px;
+            font-size: 1.2rem;
+            color: #F4C430;
+            border-radius: 25px;
+            padding: 10px;
+            z-index: -1;
+            overflow: hidden;
+            white-space: nowrap;
+            animation: borderFlow 10s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes borderFlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            position: absolute;
+            right: 20px;
+            top: 15px;
+        }
+
+        .close:hover {
+            color: #333;
+        }
+
+        .modal-title {
+            font-size: 2.2rem;
+            color: #B8860B;
+            margin-bottom: 20px;
+            font-family: 'Brush Script MT', cursive;
+            text-shadow: 1px 1px 2px rgba(244, 196, 48, 0.3);
+        }
+
+        .modal-text {
+            color: #555;
+            font-size: 1.1rem;
+            line-height: 1.7;
+            text-align: justify;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .card-content {
+                padding: 30px 25px;
+            }
+            
+            .title {
+                font-size: 2.3rem;
+            }
+            
+            .modal-content {
+                margin: 10% auto;
+                padding: 30px 25px;
+            }
+
+            .floating-sunflower {
+                font-size: 1.5rem !important;
+            }
+        }
+
+        /* Animación suave para entrada */
+        .card-container {
+            animation: slideIn 0.8s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Girasoles flotantes alrededor -->
+    <div class="floating-sunflower">🌻🌻</div>
+    <div class="floating-sunflower">🌻🌻</div>
+    <div class="floating-sunflower">🌻🌻</div>
+    <div class="floating-sunflower">🌻🌻</div>
+    <div class="floating-sunflower">🌻🌻</div>
+    <div class="floating-sunflower">🌻🌻</div>
+    <div class="floating-sunflower">🌻🌻</div>
+    <div class="floating-sunflower">🌻🌻</div>
+    <div class="floating-sunflower">🌻🌻</div>
+    <div class="floating-sunflower">🌻🌻</div>
+    <div class="floating-sunflower">🌻🌻</div>
+    <div class="floating-sunflower">🌻🌻</div>
+
+    <div class="card-container">
+        
+        <div class="card-content">
+            <h1 class="title">Para Ti Grecia</h1>
+            <p class="subtitle">
+                <span>Pequeño regalo desde el corazón</span>
+                <span>🌻</span>
+            </p>
+            
+            <p class="message">
+                "Hoy que es el día de las flores amarillas, pensé en hacerte este detalle porque me alegra haberte conocido y
+                siempre es chévere conversar contigo."
+            
+                Como estos girasoles que buscan la luz, espero que siempre tengas motivos para sonreír y seguir brillando como lo
+                haces.
+            </p>
+            
+            <div class="features">
+                <div class="feature-item">
+                    <span class="feature-icon">🌻</span>
+                    <span>Tu luz</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">✨</span>
+                    <span>Tus sueños</span>
+                </div>
+                <div class="tulips-decoration">
+                    <svg width="60" height="70" viewBox="0 0 60 70">
+                        <!-- Pétalos -->
+                        <ellipse cx="30" cy="15" rx="8" ry="15" fill="#FFD700" transform="rotate(0 30 30)"/>
+                        <ellipse cx="30" cy="15" rx="8" ry="15" fill="#F4C430" transform="rotate(30 30 30)"/>
+                        <ellipse cx="30" cy="15" rx="8" ry="15" fill="#FFD700" transform="rotate(60 30 30)"/>
+                        <ellipse cx="30" cy="15" rx="8" ry="15" fill="#F4C430" transform="rotate(90 30 30)"/>
+                        <ellipse cx="30" cy="15" rx="8" ry="15" fill="#FFD700" transform="rotate(120 30 30)"/>
+                        <ellipse cx="30" cy="15" rx="8" ry="15" fill="#F4C430" transform="rotate(150 30 30)"/>
+                        <ellipse cx="30" cy="15" rx="8" ry="15" fill="#FFD700" transform="rotate(180 30 30)"/>
+                        <ellipse cx="30" cy="15" rx="8" ry="15" fill="#F4C430" transform="rotate(210 30 30)"/>
+                        <ellipse cx="30" cy="15" rx="8" ry="15" fill="#FFD700" transform="rotate(240 30 30)"/>
+                        <ellipse cx="30" cy="15" rx="8" ry="15" fill="#F4C430" transform="rotate(270 30 30)"/>
+                        <ellipse cx="30" cy="15" rx="8" ry="15" fill="#FFD700" transform="rotate(300 30 30)"/>
+                        <ellipse cx="30" cy="15" rx="8" ry="15" fill="#F4C430" transform="rotate(330 30 30)"/>
+                        <!-- Centro -->
+                        <circle cx="30" cy="30" r="10" fill="#8B4513"/>
+                        <circle cx="30" cy="30" r="8" fill="#654321"/>
+                        <!-- Tallo -->
+                        <rect x="28" y="40" width="4" height="30" fill="#228B22"/>
+                    </svg>
+                    <svg width="60" height="70" viewBox="0 0 60 70">
+                        <!-- Pétalos -->
+                        <ellipse cx="30" cy="15" rx="8" ry="15" fill="#FFD700" transform="rotate(0 30 30)"/>
+                        <ellipse cx="30" cy="15" rx="8" ry="15" fill="#F4C430" transform="rotate(30 30 30)"/>
+                        <ellipse cx="30" cy="15" rx="8" ry="15" fill="#FFD700" transform="rotate(60 30 30)"/>
+                        <ellipse cx="30" cy="15" rx="8" ry="15" fill="#F4C430" transform="rotate(90 30 30)"/>
+                        <ellipse cx="30" cy="15" rx="8" ry="15" fill="#FFD700" transform="rotate(120 30 30)"/>
+                        <ellipse cx="30" cy="15" rx="8" ry="15" fill="#F4C430" transform="rotate(150 30 30)"/>
+                        <ellipse cx="30" cy="15" rx="8" ry="15" fill="#FFD700" transform="rotate(180 30 30)"/>
+                        <ellipse cx="30" cy="15" rx="8" ry="15" fill="#F4C430" transform="rotate(210 30 30)"/>
+                        <ellipse cx="30" cy="15" rx="8" ry="15" fill="#FFD700" transform="rotate(240 30 30)"/>
+                        <ellipse cx="30" cy="15" rx="8" ry="15" fill="#F4C430" transform="rotate(270 30 30)"/>
+                        <ellipse cx="30" cy="15" rx="8" ry="15" fill="#FFD700" transform="rotate(300 30 30)"/>
+                        <ellipse cx="30" cy="15" rx="8" ry="15" fill="#F4C430" transform="rotate(330 30 30)"/>
+                        <!-- Centro -->
+                        <circle cx="30" cy="30" r="10" fill="#8B4513"/>
+                        <circle cx="30" cy="30" r="8" fill="#654321"/>
+                        <!-- Tallo -->
+                        <rect x="28" y="40" width="4" height="30" fill="#228B22"/>
+                    </svg>
+                    <svg width="60" height="70" viewBox="0 0 60 70">
+                        <!-- Pétalos -->
+                        <ellipse cx="30" cy="15" rx="8" ry="15" fill="#FFD700" transform="rotate(0 30 30)"/>
+                        <ellipse cx="30" cy="15" rx="8" ry="15" fill="#F4C430" transform="rotate(30 30 30)"/>
+                        <ellipse cx="30" cy="15" rx="8" ry="15" fill="#FFD700" transform="rotate(60 30 30)"/>
+                        <ellipse cx="30" cy="15" rx="8" ry="15" fill="#F4C430" transform="rotate(90 30 30)"/>
+                        <ellipse cx="30" cy="15" rx="8" ry="15" fill="#FFD700" transform="rotate(120 30 30)"/>
+                        <ellipse cx="30" cy="15" rx="8" ry="15" fill="#F4C430" transform="rotate(150 30 30)"/>
+                        <ellipse cx="30" cy="15" rx="8" ry="15" fill="#FFD700" transform="rotate(180 30 30)"/>
+                        <ellipse cx="30" cy="15" rx="8" ry="15" fill="#F4C430" transform="rotate(210 30 30)"/>
+                        <ellipse cx="30" cy="15" rx="8" ry="15" fill="#FFD700" transform="rotate(240 30 30)"/>
+                        <ellipse cx="30" cy="15" rx="8" ry="15" fill="#F4C430" transform="rotate(270 30 30)"/>
+                        <ellipse cx="30" cy="15" rx="8" ry="15" fill="#FFD700" transform="rotate(300 30 30)"/>
+                        <ellipse cx="30" cy="15" rx="8" ry="15" fill="#F4C430" transform="rotate(330 30 30)"/>
+                        <!-- Centro -->
+                        <circle cx="30" cy="30" r="10" fill="#8B4513"/>
+                        <circle cx="30" cy="30" r="8" fill="#654321"/>
+                        <!-- Tallo -->
+                        <rect x="28" y="40" width="4" height="30" fill="#228B22"/>
+                    </svg>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="messageModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 class="modal-title">Mensaje Especial 🌻</h2>
+            <div class="modal-text">
+                <p><strong>21 de Septiembre - Día de las Flores Amarillas</strong></p>
+                <br>
+                <p>Querida persona especial,</p>
+                <br>
+                <p>En este día de las flores amarillas, quiero que estas palabras lleguen a tu corazón como la luz del sol llega a los girasoles. No es casualidad que estas flores siempre miren hacia la luz; es su naturaleza, su esencia, su propósito.</p>
+                <br>
+                <p>Así como tú has sido esa luz en mi vida. En los días grises, en los momentos difíciles, en las alegrías compartidas y en los sueños por cumplir. Tu presencia transforma todo, como el sol transforma un campo de girasoles en un mar dorado de esperanza.</p>
+                <br>
+                <p>Que este día te recuerde lo especial que eres, lo importante que es tu luz en este mundo, y que siempre habrá nuevos amaneceres llenos de posibilidades.</p>
+                <br>
+                <p>Con todo mi cariño,<br>
+                En este día tan especial 💛</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal() {
+            document.getElementById('messageModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('messageModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function shareMessage() {
+            const shareText = `🌻 Día de las Flores Amarillas - 21 de Septiembre 🌻
+
+En este día especial, quiero que sepas que iluminas cada momento con tu presencia. Como los girasoles que siempre buscan la luz, tú eres esa luz que hace todo más hermoso.
+
+💛 Con todo mi cariño en este día tan especial`;
+
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Día de las Flores Amarillas',
+                    text: shareText,
+                }).catch((error) => {
+                    fallbackShare(shareText);
+                });
+            } else {
+                fallbackShare(shareText);
+            }
+        }
+
+        function fallbackShare(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('¡Mensaje copiado al portapapeles! 📋\nAhora puedes pegarlo donde quieras compartirlo.');
+            }).catch(() => {
+                // Mostrar el texto en una nueva ventana si el clipboard no funciona
+                const shareWindow = window.open('', '_blank', 'width=500,height=400');
+                shareWindow.document.write(`
+                    <html>
+                        <head><title>Compartir Mensaje</title></head>
+                        <body style="font-family: Georgia, serif; padding: 20px; background: #F5E6D3;">
+                            <h2>Copia este mensaje:</h2>
+                            <textarea style="width: 100%; height: 250px; padding: 15px; font-size: 14px; border-radius: 5px; border: 1px solid #ccc;">${text}</textarea>
+                            <br><br>
+                            <button onclick="window.close()" style="background: #F4C430; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Cerrar</button>
+                        </body>
+                    </html>
+                `);
+            });
+        }
+
+        // Cerrar modal al hacer click fuera de él
+        window.onclick = function(event) {
+            const modal = document.getElementById('messageModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Cerrar modal con tecla Escape
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+
+    <!-- Música de fondo -->
+    <iframe id="soundcloud-widget"
+            width="100%"
+            height="166"
+            scrolling="no"
+            frameborder="no"
+            allow="autoplay"
+            style="position: fixed; top: -200px; left: 0; opacity: 0; pointer-events: none; z-index: -1;"
+            src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/shelseashels/floricienta-flores-amarillas&color=%23ff5500&auto_play=true&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&visual=false&buying=false&liking=false&download=false&sharing=false&show_artwork=false">
+    </iframe>
+
+    <iframe id="soundcloud-widget-2"
+            width="100%"
+            height="166"
+            scrolling="no"
+            frameborder="no"
+            allow="autoplay"
+            style="position: fixed; top: -200px; left: 0; opacity: 0; pointer-events: none; z-index: -1;"
+            src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/shelseashels/floricienta-flores-amarillas&color=%23ff5500&auto_play=true&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&visual=false&buying=false&liking=false&download=false&sharing=false&show_artwork=false">
+    </iframe>
+</body>
+</html>

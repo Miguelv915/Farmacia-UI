@@ -1,4 +1,4 @@
-import { contextBridge , ipcRenderer} from 'electron'
+import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 // Custom APIs for renderer
 
@@ -6,16 +6,30 @@ import { electronAPI } from '@electron-toolkit/preload'
  * 
  * En api van todas las fuciones 
  * Funciona como puente de segurid , seprado el backend y el frontend
- *  */ 
+ *  */
 
 
 const api = {
-  
+
   producto: {
     insertar: (data) => ipcRenderer.invoke('insertar-producto', data),
     listar: () => ipcRenderer.invoke('listar-productos'),
-    eliminar: (id) => ipcRenderer.invoke('eliminar-producto',id),
-    actulizar: (data) => ipcRenderer.invoke('actualizar-producto',data),
+    eliminar: (id) => ipcRenderer.invoke('eliminar-producto', id),
+    actulizar: (data) => ipcRenderer.invoke('actualizar-producto', data),
+  },
+
+  proveedor: {
+    insertar: (data) => ipcRenderer.invoke('insertar-proveedor', data),
+    listar: () => ipcRenderer.invoke('listar-proveedor'),
+    eliminar: (id) => ipcRenderer.invoke('eliminar-proveedor', id),
+    actualizar: (data) => ipcRenderer.invoke('actualizar-proveedor', data),
+  },
+
+  cliente: {
+    insertar: (data) => ipcRenderer.invoke('insertar-cliente', data),
+    listar: () => ipcRenderer.invoke('listar-cliente'),
+    eliminar: (id) => ipcRenderer.invoke('eliminar-cliente', id),
+    actualizar: (data) => ipcRenderer.invoke('actualizar-cliente', data),
   },
 
 }

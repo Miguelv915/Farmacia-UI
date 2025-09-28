@@ -1,0 +1,1959 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌻 Girasoles para Thais 🌻</title>
+    <style>
+        :root {
+            --dark-color: #0a0a0a;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: var(--dark-color);
+            overflow-x: hidden;
+            perspective: 1000px;
+            margin: 0;
+            padding: 20px;
+            position: relative;
+        }
+
+        .night {
+            position: fixed;
+            left: 50%;
+            top: 0;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 100%;
+            filter: blur(0.1vmin);
+            background-image: 
+                radial-gradient(ellipse at top, transparent 0%, var(--dark-color)),
+                radial-gradient(ellipse at bottom, var(--dark-color), rgba(145, 233, 255, 0.2)),
+                repeating-linear-gradient(220deg, rgb(0, 0, 0) 0px, rgb(0, 0, 0) 19px, transparent 19px, transparent 22px),
+                repeating-linear-gradient(189deg, rgb(0, 0, 0) 0px, rgb(0, 0, 0) 19px, transparent 19px, transparent 22px),
+                repeating-linear-gradient(148deg, rgb(0, 0, 0) 0px, rgb(0, 0, 0) 19px, transparent 19px, transparent 22px),
+                linear-gradient(90deg, rgb(0, 255, 250), rgb(240, 240, 240));
+            z-index: -1;
+        }
+
+        .title {
+            position: relative;
+            font-size: 2.5em;
+            color: #ffd700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            font-family: 'Georgia', serif;
+            font-weight: bold;
+            z-index: 100;
+            animation: glow 2s ease-in-out infinite alternate;
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 20px rgba(255, 215, 0, 0.5); }
+            to { text-shadow: 0 0 30px rgba(255, 215, 0, 0.8); }
+        }
+
+        .message {
+            position: relative;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            max-width: 90%;
+            text-align: center;
+            color: #fff;
+            font-size: 1.1em;
+            line-height: 1.6;
+            font-family: 'Georgia', serif;
+            z-index: 100;
+            margin-bottom: 20px;
+        }
+
+        .flowers-container {
+            position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            min-height: 40vh;
+            z-index: 10;
+            margin-top: auto;
+        }
+
+        .flowers {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            width: 100%;
+            gap: 10px;
+        }
+
+        .flower {
+            position: relative;
+            margin: 0 1vmin;
+            transform-origin: bottom center;
+            --fl-speed: 0.8s;
+        }
+
+        .flower--1 {
+            animation: fl-1 4s var(--fl-speed) infinite linear;
+        }
+
+        .flower--2 {
+            animation: fl-2 4s var(--fl-speed) infinite linear;
+        }
+
+        .flower--3 {
+            animation: fl-3 4s var(--fl-speed) infinite linear;
+        }
+
+        .flower--4 {
+            animation: fl-4 4s var(--fl-speed) infinite linear;
+        }
+
+        .flower--5 {
+            animation: fl-5 4s var(--fl-speed) infinite linear;
+        }
+
+        .flower__leafs {
+            position: relative;
+            animation: bloom 3s var(--fl-speed) infinite linear;
+        }
+
+        .flower__leafs--1 {
+            width: 10vmin;
+            height: 10vmin;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Estructura principal del girasol */
+        .sunflower-head {
+            position: relative;
+            width: 12vmin;
+            height: 12vmin;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Capa de pétalos con gradientes realistas */
+        .petals-layer {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .petal {
+            position: absolute;
+            width: 3vmin;
+            height: 8vmin;
+            background: linear-gradient(to bottom,
+                #ffeb3b 0%,
+                #ffc107 30%,
+                #ff9800 70%,
+                #ff6f00 100%);
+            border-radius: 50% 50% 80% 80%;
+            transform-origin: 50% 90%;
+            box-shadow:
+                inset 0.2vmin 0 0.5vmin rgba(255,255,255,0.3),
+                inset -0.2vmin 0 0.5vmin rgba(0,0,0,0.2),
+                0 0.1vmin 0.3vmin rgba(0,0,0,0.2);
+        }
+
+        /* Posicionamiento circular de los pétalos */
+        .petal:nth-child(1) { transform: translateX(-50%) translateY(-50%) rotate(0deg); top: 50%; left: 50%; }
+        .petal:nth-child(2) { transform: translateX(-50%) translateY(-50%) rotate(22.5deg); top: 50%; left: 50%; }
+        .petal:nth-child(3) { transform: translateX(-50%) translateY(-50%) rotate(45deg); top: 50%; left: 50%; }
+        .petal:nth-child(4) { transform: translateX(-50%) translateY(-50%) rotate(67.5deg); top: 50%; left: 50%; }
+        .petal:nth-child(5) { transform: translateX(-50%) translateY(-50%) rotate(90deg); top: 50%; left: 50%; }
+        .petal:nth-child(6) { transform: translateX(-50%) translateY(-50%) rotate(112.5deg); top: 50%; left: 50%; }
+        .petal:nth-child(7) { transform: translateX(-50%) translateY(-50%) rotate(135deg); top: 50%; left: 50%; }
+        .petal:nth-child(8) { transform: translateX(-50%) translateY(-50%) rotate(157.5deg); top: 50%; left: 50%; }
+        .petal:nth-child(9) { transform: translateX(-50%) translateY(-50%) rotate(180deg); top: 50%; left: 50%; }
+        .petal:nth-child(10) { transform: translateX(-50%) translateY(-50%) rotate(202.5deg); top: 50%; left: 50%; }
+        .petal:nth-child(11) { transform: translateX(-50%) translateY(-50%) rotate(225deg); top: 50%; left: 50%; }
+        .petal:nth-child(12) { transform: translateX(-50%) translateY(-50%) rotate(247.5deg); top: 50%; left: 50%; }
+        .petal:nth-child(13) { transform: translateX(-50%) translateY(-50%) rotate(270deg); top: 50%; left: 50%; }
+        .petal:nth-child(14) { transform: translateX(-50%) translateY(-50%) rotate(292.5deg); top: 50%; left: 50%; }
+        .petal:nth-child(15) { transform: translateX(-50%) translateY(-50%) rotate(315deg); top: 50%; left: 50%; }
+        .petal:nth-child(16) { transform: translateX(-50%) translateY(-50%) rotate(337.5deg); top: 50%; left: 50%; }
+
+        /* Centro del girasol con patrón de semillas realista */
+        .sunflower-center {
+            position: absolute;
+            width: 5vmin;
+            height: 5vmin;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%,
+                #8d6e63 0%,
+                #5d4037 30%,
+                #3e2723 60%,
+                #1a0e0a 100%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 15;
+            box-shadow:
+                inset 0.3vmin 0.3vmin 0.8vmin rgba(0,0,0,0.5),
+                0 0.2vmin 0.5vmin rgba(0,0,0,0.3);
+        }
+
+        /* Patrón de semillas en el centro */
+        .sunflower-center::before {
+            content: '';
+            position: absolute;
+            top: 15%;
+            left: 15%;
+            width: 0.3vmin;
+            height: 0.3vmin;
+            background: #2c1810;
+            border-radius: 50%;
+            box-shadow:
+                0.8vmin 0.2vmin 0 0.05vmin #2c1810,
+                0.3vmin 0.9vmin 0 0.05vmin #2c1810,
+                1.2vmin 0.7vmin 0 0.05vmin #2c1810,
+                0.6vmin 1.4vmin 0 0.05vmin #2c1810,
+                1.5vmin 1.1vmin 0 0.05vmin #2c1810,
+                0.9vmin 0.4vmin 0 0.05vmin #2c1810,
+                1.8vmin 0.9vmin 0 0.05vmin #2c1810,
+                0.4vmin 1.7vmin 0 0.05vmin #2c1810;
+        }
+
+        /* Brillo natural en el centro */
+        .sunflower-center::after {
+            content: '';
+            position: absolute;
+            top: 25%;
+            left: 25%;
+            width: 50%;
+            height: 50%;
+            background: radial-gradient(circle,
+                rgba(139,110,99,0.3) 0%,
+                transparent 70%);
+            border-radius: 50%;
+        }
+
+        /* Partículas de polen brillantes */
+        .pollen-glow {
+            position: absolute;
+            width: 0.8vmin;
+            height: 0.8vmin;
+            background: rgba(255, 235, 59, 0.9);
+            border-radius: 50%;
+            filter: blur(0.15vmin);
+            animation: pollenGlow 4s ease-in-out infinite;
+        }
+
+        /* Posicionamiento de las partículas de polen */
+        .pollen-glow:nth-child(1) { top: -1.5vmin; left: -1.5vmin; animation-delay: 0s; }
+        .pollen-glow:nth-child(2) { top: -2vmin; left: 0.5vmin; animation-delay: 0.5s; }
+        .pollen-glow:nth-child(3) { top: -1.5vmin; left: 2.5vmin; animation-delay: 1s; }
+        .pollen-glow:nth-child(4) { top: 0.5vmin; left: 3vmin; animation-delay: 1.5s; }
+        .pollen-glow:nth-child(5) { top: 2.5vmin; left: 2.5vmin; animation-delay: 2s; }
+        .pollen-glow:nth-child(6) { top: 3vmin; left: 0.5vmin; animation-delay: 2.5s; }
+        .pollen-glow:nth-child(7) { top: 2.5vmin; left: -1.5vmin; animation-delay: 3s; }
+        .pollen-glow:nth-child(8) { top: 0.5vmin; left: -2vmin; animation-delay: 3.5s; }
+
+        /* Tallo del girasol */
+        .flower__line {
+            height: 25vmin;
+            width: 2vmin;
+            background: linear-gradient(to bottom, #4caf50, #2e7d32);
+            margin: 0 auto;
+            border-radius: 2vmin;
+            position: relative;
+            transform-origin: bottom center;
+        }
+
+        /* Hojas del tallo con gradientes naturales */
+        .flower__line__leaf {
+            position: absolute;
+            background: linear-gradient(45deg,
+                #66bb6a 0%,
+                #4caf50 50%,
+                #388e3c 100%);
+            border-radius: 0 2.5vmin 2.5vmin 0;
+            transform-origin: 0 100%;
+            box-shadow:
+                inset 0.2vmin 0 0.5vmin rgba(255,255,255,0.3),
+                inset -0.2vmin 0 0.5vmin rgba(0,0,0,0.2),
+                0 0.1vmin 0.3vmin rgba(0,0,0,0.3);
+        }
+
+        /* Posicionamiento individual de cada hoja */
+        .flower__line__leaf--1 {
+            width: 3.5vmin;
+            height: 7vmin;
+            top: 8vmin;
+            left: -1.8vmin;
+            transform: rotate(-25deg);
+        }
+
+        .flower__line__leaf--2 {
+            width: 3vmin;
+            height: 6vmin;
+            top: 15vmin;
+            right: -1.5vmin;
+            transform: rotate(30deg) scaleX(-1);
+        }
+
+        .flower__line__leaf--3 {
+            width: 3.2vmin;
+            height: 6.5vmin;
+            top: 5vmin;
+            right: -1.6vmin;
+            transform: rotate(20deg) scaleX(-1);
+        }
+
+        .flower__line__leaf--4 {
+            width: 2.8vmin;
+            height: 5.5vmin;
+            top: 18vmin;
+            left: -1.4vmin;
+            transform: rotate(-25deg);
+        }
+
+        .flower__line__leaf--5 {
+            width: 2.5vmin;
+            height: 5vmin;
+            top: 12vmin;
+            left: -1.3vmin;
+            transform: rotate(-35deg);
+        }
+
+        .flower__line__leaf--6 {
+            width: 2.2vmin;
+            height: 4.5vmin;
+            top: 6vmin;
+            left: -1.1vmin;
+            transform: rotate(-28deg);
+        }
+
+        /* Superposición de brillo natural */
+        .sunflower-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 40% 40%,
+                rgba(255, 235, 59, 0.2) 0%,
+                rgba(255, 193, 7, 0.1) 40%,
+                transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: naturalGlow 6s ease-in-out infinite;
+        }
+
+        /* Animaciones de movimiento de las flores */
+        @keyframes fl-1 {
+            0%, 100% { transform: rotate(-2deg); }
+            50% { transform: rotate(2deg); }
+        }
+
+        @keyframes fl-2 {
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(1deg); }
+        }
+
+        @keyframes fl-3 {
+            0%, 100% { transform: rotate(1deg); }
+            50% { transform: rotate(-3deg); }
+        }
+
+        @keyframes fl-4 {
+            0%, 100% { transform: rotate(-1deg); }
+            50% { transform: rotate(3deg); }
+        }
+
+        @keyframes fl-5 {
+            0%, 100% { transform: rotate(3deg); }
+            50% { transform: rotate(-1deg); }
+        }
+
+        @keyframes bloom {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Animación del polen brillante */
+        @keyframes pollenGlow {
+            0%, 100% {
+                opacity: 0.6;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.3);
+            }
+        }
+
+        /* Animación del brillo natural */
+        @keyframes naturalGlow {
+            0%, 100% {
+                opacity: 0.8;
+                filter: brightness(1);
+            }
+            50% {
+                opacity: 1;
+                filter: brightness(1.2);
+            }
+        }
+
+        /* Efectos mágicos mejorados */
+        .magic-particle {
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            background: #ffd700;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1000;
+            box-shadow: 0 0 10px #ffd700;
+        }
+
+        .love-heart {
+            position: fixed;
+            font-size: 18px;
+            pointer-events: none;
+            z-index: 1000;
+            animation: heartFloat 4s ease-out forwards;
+        }
+
+        .wave-ripple {
+            position: fixed;
+            border: 3px solid #ffd700;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 999;
+            box-shadow: 0 0 20px rgba(255,215,0,0.6);
+        }
+
+        .golden-petal {
+            position: fixed;
+            width: 8px;
+            height: 12px;
+            background: linear-gradient(45deg, #ffd700, #ff8f00);
+            border-radius: 50% 50% 50% 0;
+            pointer-events: none;
+            z-index: 998;
+            opacity: 0.8;
+        }
+
+        /* Animaciones de efectos mágicos */
+        @keyframes particleExplode {
+            0% { 
+                opacity: 1; 
+                transform: scale(0) rotate(0deg);
+            }
+            50% { 
+                opacity: 1; 
+                transform: scale(1.5) rotate(180deg);
+            }
+            100% { 
+                opacity: 0; 
+                transform: scale(0.5) rotate(360deg) translate(var(--dx), var(--dy));
+            }
+        }
+
+        @keyframes heartFloat {
+            0% { 
+                opacity: 0; 
+                transform: scale(0) rotate(0deg);
+            }
+            20% {
+                opacity: 1;
+                transform: scale(1.2) rotate(180deg);
+            }
+            100% { 
+                opacity: 0; 
+                transform: scale(0.8) rotate(720deg) translate(var(--heart-dx), var(--heart-dy));
+            }
+        }
+
+        @keyframes waveExpand {
+            0% { 
+                width: 20px; 
+                height: 20px; 
+                opacity: 0.8;
+                border-width: 3px;
+            }
+            100% { 
+                width: 200px; 
+                height: 200px; 
+                opacity: 0;
+                border-width: 1px;
+            }
+        }
+
+        @keyframes petalRain {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 0;
+            }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { 
+                filter: brightness(1) saturate(1) drop-shadow(0 0 10px #ffd700);
+            }
+            50% { 
+                filter: brightness(1.5) saturate(1.5) drop-shadow(0 0 30px #ffd700);
+            }
+        }
+
+        /* Botón de acción mágica */
+        .action-button {
+            position: relative;
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #ffd700, #ff8f00);
+            border: none;
+            border-radius: 25px;
+            color: #2c3e50;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 100;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .action-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.6);
+        }
+
+        /* Responsive design para dispositivos móviles */
+        @media (max-width: 768px) {
+            .title { 
+                font-size: 1.8em; 
+                margin-top: 15px;
+                margin-bottom: 15px;
+            }
+            
+            .message { 
+                font-size: 0.9em; 
+                padding: 15px; 
+                max-width: 85%;
+                margin-bottom: 15px;
+            }
+            
+            .flowers-container { 
+                min-height: 35vh;
+            }
+            
+            .flowers {
+                gap: 5px;
+            }
+            
+            .flower {
+                margin: 0 0.5vmin;
+            }
+            
+            .sunflower-head {
+                width: 8vmin;
+                height: 8vmin;
+            }
+            
+            .petal {
+                width: 2vmin;
+                height: 5.5vmin;
+            }
+            
+            .sunflower-center {
+                width: 3.5vmin;
+                height: 3.5vmin;
+            }
+            
+            .flower__line {
+                height: 18vmin;
+                width: 1.5vmin;
+            }
+            
+            .action-button {
+                padding: 12px 25px;
+                font-size: 1em;
+                margin-top: 15px;
+                margin-bottom: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+                justify-content: flex-start;
+            }
+            
+            .title { 
+                font-size: 1.5em; 
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+            
+            .message { 
+                font-size: 0.8em; 
+                padding: 12px; 
+                max-width: 90%;
+                margin-bottom: 10px;
+            }
+            
+            .flowers-container { 
+                min-height: 30vh;
+                margin-top: 10px;
+            }
+            
+            .flowers {
+                gap: 3px;
+            }
+            
+            .flower {
+                margin: 0 0.3vmin;
+            }
+            
+            .sunflower-head {
+                width: 6vmin;
+                height: 6vmin;
+            }
+            
+            .petal {
+                width: 1.5vmin;
+                height: 4vmin;
+            }
+            
+            .sunflower-center {
+                width: 2.5vmin;
+                height: 2.5vmin;
+            }
+            
+            .sunflower-center::before {
+                transform: scale(0.8);
+            }
+            
+            .flower__line {
+                height: 15vmin;
+                width: 1.2vmin;
+            }
+            
+            .flower__line__leaf--1,
+            .flower__line__leaf--2,
+            .flower__line__leaf--3,
+            .flower__line__leaf--4,
+            .flower__line__leaf--5,
+            .flower__line__leaf--6 {
+                transform: scale(0.8);
+            }
+            
+            .action-button {
+                padding: 10px 20px;
+                font-size: 0.9em;
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+            
+            /* Ajustar efectos para móviles */
+            .magic-particle {
+                width: 4px;
+                height: 4px;
+            }
+            
+            .love-heart {
+                font-size: 14px;
+            }
+            
+            .golden-petal {
+                width: 6px;
+                height: 9px;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .flowers {
+                transform: scale(0.9);
+            }
+            
+            .title {
+                font-size: 1.3em;
+            }
+            
+            .message {
+                font-size: 0.75em;
+                padding: 10px;
+            }
+        }
+
+        /* Estilos para girasoles de fondo */
+        .background-sunflowers {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .bg-sunflower {
+            position: absolute;
+            opacity: 0.3;
+            animation: floatBackground 8s ease-in-out infinite;
+            filter: blur(1px);
+        }
+
+        .bg-sunflower .sunflower-head {
+            pointer-events: all;
+        }
+
+        .bg-sunflower .clickable-petal {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            pointer-events: all;
+        }
+
+        .bg-sunflower .clickable-petal:hover {
+            opacity: 1;
+            transform: scale(1.1);
+            filter: brightness(1.3);
+        }
+
+        .bg-sunflower-1 {
+            top: 10%;
+            left: 5%;
+            transform: scale(0.6);
+            animation-delay: 0s;
+        }
+
+        .bg-sunflower-2 {
+            top: 15%;
+            right: 8%;
+            transform: scale(0.7);
+            animation-delay: 2s;
+        }
+
+        .bg-sunflower-3 {
+            bottom: 20%;
+            left: 10%;
+            transform: scale(0.5);
+            animation-delay: 4s;
+        }
+
+        .bg-sunflower-4 {
+            bottom: 15%;
+            right: 12%;
+            transform: scale(0.65);
+            animation-delay: 6s;
+        }
+
+        /* Girasol central más prominente */
+        .flower--center {
+            transform: scale(1.3);
+            z-index: 10;
+        }
+
+        .flower--center .clickable-petal {
+            cursor: pointer;
+            transition: all 0.4s ease;
+            pointer-events: all;
+        }
+
+        .flower--center .clickable-petal:hover {
+            transform: scale(1.2);
+            filter: brightness(1.5) saturate(1.3);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+        }
+
+        /* Animación de flotación para los girasoles de fondo */
+        @keyframes floatBackground {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg) scale(var(--scale, 0.6));
+            }
+            25% {
+                transform: translateY(-15px) rotate(2deg) scale(var(--scale, 0.6));
+            }
+            50% {
+                transform: translateY(-10px) rotate(-1deg) scale(var(--scale, 0.6));
+            }
+            75% {
+                transform: translateY(-20px) rotate(1deg) scale(var(--scale, 0.6));
+            }
+        }
+
+        /* Efectos especiales para pétalos clickeables */
+        .clickable-petal {
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .clickable-petal:hover::after {
+            content: '✨';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8em;
+            animation: sparkle 1s ease-in-out infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+            50% {
+                opacity: 0.5;
+                transform: translateX(-50%) translateY(-5px);
+            }
+        }
+
+        /* Popup de mensaje personalizado */
+        .petal-message-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: linear-gradient(135deg,
+                rgba(255, 215, 0, 0.95),
+                rgba(255, 193, 7, 0.95));
+            backdrop-filter: blur(15px);
+            padding: 25px 30px;
+            border-radius: 20px;
+            border: 3px solid #fff;
+            color: #2c3e50;
+            text-align: center;
+            font-size: 1.1em;
+            font-weight: bold;
+            max-width: 85%;
+            z-index: 1005;
+            box-shadow:
+                0 20px 60px rgba(255, 215, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            animation: petalPopup 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+            line-height: 1.5;
+        }
+
+        @keyframes petalPopup {
+            0% {
+                transform: translate(-50%, -50%) scale(0) rotate(-180deg);
+                opacity: 0;
+            }
+            60% {
+                transform: translate(-50%, -50%) scale(1.1) rotate(10deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        /* Orientación horizontal en móviles */
+        @media (max-height: 500px) and (orientation: landscape) {
+            body {
+                padding: 10px;
+                justify-content: flex-start;
+                min-height: auto;
+            }
+
+            .title {
+                font-size: 1.3em;
+                margin: 5px 0;
+            }
+
+            .message {
+                font-size: 0.7em;
+                padding: 8px;
+                margin: 5px 0;
+                max-width: 80%;
+            }
+
+            .flowers-container {
+                min-height: 25vh;
+                margin: 5px 0;
+            }
+
+            .action-button {
+                padding: 8px 15px;
+                font-size: 0.8em;
+                margin: 5px 0;
+            }
+
+            .bg-sunflower {
+                opacity: 0.2;
+            }
+        }
+
+        /* Ajustes responsivos para girasoles de fondo */
+        @media (max-width: 768px) {
+            .bg-sunflower {
+                opacity: 0.25;
+            }
+
+            .bg-sunflower-1 {
+                transform: scale(0.4);
+                top: 8%;
+                left: 3%;
+            }
+
+            .bg-sunflower-2 {
+                transform: scale(0.5);
+                top: 12%;
+                right: 5%;
+            }
+
+            .bg-sunflower-3 {
+                transform: scale(0.35);
+                bottom: 25%;
+                left: 8%;
+            }
+
+            .bg-sunflower-4 {
+                transform: scale(0.45);
+                bottom: 20%;
+                right: 8%;
+            }
+
+            .flower--center {
+                transform: scale(1.1);
+            }
+
+            .petal-message-popup {
+                font-size: 0.9em;
+                padding: 20px 25px;
+                max-width: 90%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .bg-sunflower {
+                opacity: 0.2;
+            }
+
+            .bg-sunflower-1 {
+                transform: scale(0.3);
+            }
+
+            .bg-sunflower-2 {
+                transform: scale(0.35);
+            }
+
+            .bg-sunflower-3 {
+                transform: scale(0.25);
+            }
+
+            .bg-sunflower-4 {
+                transform: scale(0.3);
+            }
+
+            .flower--center {
+                transform: scale(0.9);
+            }
+
+            .petal-message-popup {
+                font-size: 0.8em;
+                padding: 15px 20px;
+                max-width: 95%;
+            }
+        }
+    </style>
+</head>
+<body class="not-loaded">
+    <!-- Widget de SoundCloud oculto para audio de fondo -->
+    <iframe id="soundcloud-widget"
+            width="100%"
+            height="166"
+            scrolling="no"
+            frameborder="no"
+            allow="autoplay"
+            style="position: fixed; top: -200px; left: 0; opacity: 0; pointer-events: none; z-index: -1;"
+            src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/shelseashels/floricienta-flores-amarillas&color=%23ff5500&auto_play=true&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&visual=false&buying=false&liking=false&download=false&sharing=false&show_artwork=false">
+    </iframe>
+
+    <!-- Audio de fondo backup -->
+    <audio id="backgroundMusic" preload="auto" loop style="display: none;">
+        <source src="./musica.mp3" type="audio/mpeg">
+        Tu navegador no soporta el elemento de audio.
+    </audio>
+
+    <div class="night"></div>
+
+    <!-- Girasoles de fondo -->
+    <div class="background-sunflowers">
+        <!-- Girasol de fondo 1 - Esquina superior izquierda -->
+        <div class="bg-sunflower bg-sunflower-1">
+            <div class="sunflower-head">
+                <div class="petals-layer">
+                    <div class="petal clickable-petal" data-message="Tu sonrisa ilumina mi día como el sol ilumina este girasol 🌻✨"></div>
+                    <div class="petal clickable-petal" data-message="Cada momento contigo es tan especial como cada rayo de sol ☀️💛"></div>
+                    <div class="petal clickable-petal" data-message="Eres la razón por la que mi mundo se llena de color 🎨🌈"></div>
+                    <div class="petal clickable-petal" data-message="Como este pétalo, tu dulzura endulza mis días 🍯💫"></div>
+                    <div class="petal clickable-petal" data-message="Tu risa es la música más hermosa que conozco 🎵💖"></div>
+                    <div class="petal clickable-petal" data-message="Contigo cada día es una nueva aventura llena de alegría 🗺️✨"></div>
+                    <div class="petal clickable-petal" data-message="Eres mi dosis diaria de vitamina felicidad 💊😊"></div>
+                    <div class="petal clickable-petal" data-message="Tu presencia hace que todo sea más brillante y hermoso 🌟💎"></div>
+                    <div class="petal clickable-petal" data-message="Como los girasoles siguen al sol, yo disfruto cada conversación contigo 🌻💬"></div>
+                    <div class="petal clickable-petal" data-message="Eres esa persona especial que hace que todo valga la pena 💝🌹"></div>
+                    <div class="petal clickable-petal" data-message="Tu energía positiva es contagiosa y maravillosa ⚡💛"></div>
+                    <div class="petal clickable-petal" data-message="Cada día contigo es un regalo que atesoro 🎁💕"></div>
+                    <div class="petal clickable-petal" data-message="Eres mi rayito de sol en los días nublados ☁️🌞"></div>
+                    <div class="petal clickable-petal" data-message="Tu amistad es uno de mis tesoros más preciados 💰👑"></div>
+                    <div class="petal clickable-petal" data-message="Como este girasol, siempre buscas lo mejor de cada situación 🌻🌈"></div>
+                    <div class="petal clickable-petal" data-message="Eres simplemente maravillosa, tal como eres 💫🦋"></div>
+                </div>
+                <div class="sunflower-center"></div>
+            </div>
+        </div>
+
+        <!-- Girasol de fondo 2 - Esquina superior derecha -->
+        <div class="bg-sunflower bg-sunflower-2">
+            <div class="sunflower-head">
+                <div class="petals-layer">
+                    <div class="petal clickable-petal" data-message="Tu creatividad me inspira todos los días 🎨✨"></div>
+                    <div class="petal clickable-petal" data-message="Eres una obra de arte en movimiento 🖼️💃"></div>
+                    <div class="petal clickable-petal" data-message="Tu inteligencia brilla más que las estrellas ⭐🧠"></div>
+                    <div class="petal clickable-petal" data-message="Cada conversación contigo es un aprendizaje 📚💡"></div>
+                    <div class="petal clickable-petal" data-message="Tu corazón es tan grande como el universo 💝🌌"></div>
+                    <div class="petal clickable-petal" data-message="Eres la definición perfecta de una persona increíble 👑✨"></div>
+                    <div class="petal clickable-petal" data-message="Tu forma de ver la vida es realmente admirable 👀🌟"></div>
+                    <div class="petal clickable-petal" data-message="Contigo el tiempo se vuelve eterno y a la vez se pasa volando ⏰💫"></div>
+                    <div class="petal clickable-petal" data-message="Eres mi dosis de motivación cuando más la necesito 💪🌻"></div>
+                    <div class="petal clickable-petal" data-message="Tu bondad hace de este mundo un lugar mejor 🌍💕"></div>
+                    <div class="petal clickable-petal" data-message="Como una flor, embelleces todo lo que tocas 🌸🎨"></div>
+                    <div class="petal clickable-petal" data-message="Eres esa persona que hace que creer en la magia sea fácil ✨🦄"></div>
+                    <div class="petal clickable-petal" data-message="Tu esencia es tan dulce como la miel de las flores 🍯🌺"></div>
+                    <div class="petal clickable-petal" data-message="Eres mi recordatorio diario de que la vida es bella 🌈💖"></div>
+                    <div class="petal clickable-petal" data-message="Tu autenticidad es tu superpoder más hermoso 🦸‍♀️💎"></div>
+                    <div class="petal clickable-petal" data-message="Simplemente eres extraordinaria en todos los sentidos 🌟👸"></div>
+                </div>
+                <div class="sunflower-center"></div>
+            </div>
+        </div>
+
+        <!-- Girasol de fondo 3 - Esquina inferior izquierda -->
+        <div class="bg-sunflower bg-sunflower-3">
+            <div class="sunflower-head">
+                <div class="petals-layer">
+                    <div class="petal clickable-petal" data-message="Tu risa es como música celestial para mis oídos 🎼👼"></div>
+                    <div class="petal clickable-petal" data-message="Eres la prueba viviente de que los ángeles existen 😇✨"></div>
+                    <div class="petal clickable-petal" data-message="Tu aura positiva ilumina cualquier espacio 🔆🌟"></div>
+                    <div class="petal clickable-petal" data-message="Contigo hasta los lunes se sienten como viernes 📅😄"></div>
+                    <div class="petal clickable-petal" data-message="Eres mi vitamina de alegría diaria 💊☀️"></div>
+                    <div class="petal clickable-petal" data-message="Tu personalidad es tan colorida como un arcoíris 🌈🎨"></div>
+                    <div class="petal clickable-petal" data-message="Eres esa persona que hace que todo parezca posible 🚀💫"></div>
+                    <div class="petal clickable-petal" data-message="Tu forma de ser alegra hasta al día más gris ☁️🌞"></div>
+                    <div class="petal clickable-petal" data-message="Eres como un abrazo cálido en un día frío 🤗❄️"></div>
+                    <div class="petal clickable-petal" data-message="Tu presencia es mi lugar feliz favorito 🏡💕"></div>
+                    <div class="petal clickable-petal" data-message="Eres la razón por la que sonrío sin darme cuenta 😊💭"></div>
+                    <div class="petal clickable-petal" data-message="Tu energía es tan contagiosa como la primavera 🌸🦋"></div>
+                    <div class="petal clickable-petal" data-message="Eres mi recordatorio de que la vida está llena de sorpresas hermosas 🎁🌺"></div>
+                    <div class="petal clickable-petal" data-message="Como el café por la mañana, me das energía para todo el día ☕⚡"></div>
+                    <div class="petal clickable-petal" data-message="Tu alma brilla más fuerte que cualquier estrella 🌟✨"></div>
+                    <div class="petal clickable-petal" data-message="Eres simplemente perfecta siendo exactamente quien eres 💎👑"></div>
+                </div>
+                <div class="sunflower-center"></div>
+            </div>
+        </div>
+
+        <!-- Girasol de fondo 4 - Esquina inferior derecha -->
+        <div class="bg-sunflower bg-sunflower-4">
+            <div class="sunflower-head">
+                <div class="petals-layer">
+                    <div class="petal clickable-petal" data-message="Tu sabiduría me asombra cada día más 🧙‍♀️📖"></div>
+                    <div class="petal clickable-petal" data-message="Eres la definición viviente de 'persona increíble' 🏆✨"></div>
+                    <div class="petal clickable-petal" data-message="Tu compañía es el mejor regalo que puedo recibir 🎁💝"></div>
+                    <div class="petal clickable-petal" data-message="Eres como un libro fascinante que nunca quiero terminar de leer 📚🔖"></div>
+                    <div class="petal clickable-petal" data-message="Tu forma de ver el mundo me inspira a ser mejor 🌍👁️"></div>
+                    <div class="petal clickable-petal" data-message="Eres mi dosis diaria de inspiración y motivación 💪🌟"></div>
+                    <div class="petal clickable-petal" data-message="Tu corazón es tan hermoso como tu sonrisa 💖😊"></div>
+                    <div class="petal clickable-petal" data-message="Contigo cada momento es una pequeña celebración 🎉✨"></div>
+                    <div class="petal clickable-petal" data-message="Eres la persona que hace que creer en la bondad sea fácil 😇💕"></div>
+                    <div class="petal clickable-petal" data-message="Tu luz interior es más brillante que mil soles ☀️💡"></div>
+                    <div class="petal clickable-petal" data-message="Eres mi recordatorio constante de que la magia existe 🪄✨"></div>
+                    <div class="petal clickable-petal" data-message="Como una melodía hermosa, siempre alegras mi día 🎵🎶"></div>
+                    <div class="petal clickable-petal" data-message="Tu presencia transforma lo ordinario en extraordinario 🌟🎭"></div>
+                    <div class="petal clickable-petal" data-message="Eres esa persona especial que hace que todo tenga sentido 🧩💫"></div>
+                    <div class="petal clickable-petal" data-message="Tu alma es tan beautiful como un amanecer 🌅💖"></div>
+                    <div class="petal clickable-petal" data-message="Simplemente eres maravillosa, y me alegra conocerte 🌺👸"></div>
+                </div>
+                <div class="sunflower-center"></div>
+            </div>
+        </div>
+    </div>
+
+    <h1 class="title">Para ti, Thais</h1>
+    
+    <div class="message">
+        <p><strong>"Hoy que es el día de las flores amarillas, pensé en hacerte este detalle porque me alegra haberte conocido y siempre es chévere conversar contigo."</strong></p>
+        <p>Como estos girasoles que buscan la luz, espero que siempre tengas motivos para sonreír y seguir brillando como lo haces.</p>
+    </div>
+    
+    <div class="flowers-container">
+        <div class="flowers">
+            <!-- Girasol Central Principal -->
+            <div class="flower flower--center">
+                <div class="flower__leafs flower__leafs--1">
+                    <div class="sunflower-head">
+                        <div class="petals-layer">
+                            <div class="petal clickable-petal" data-message="🌻 En el centro de mi corazón estás tú, brillando como este girasol ✨💛"></div>
+                            <div class="petal clickable-petal" data-message="💫 Como el sol es el centro del sistema solar, tú eres el centro de mis mejores momentos 🌞🌌"></div>
+                            <div class="petal clickable-petal" data-message="🎯 Eres la razón perfecta para sonreír cada nuevo día que comienza 😊🌅"></div>
+                            <div class="petal clickable-petal" data-message="💎 Tu alma es el tesoro más valioso que he tenido el privilegio de conocer 👑✨"></div>
+                            <div class="petal clickable-petal" data-message="🌈 Contigo cada día es como encontrar un arcoíris después de la lluvia 🌧️☀️"></div>
+                            <div class="petal clickable-petal" data-message="🎨 Eres la obra maestra que Dios creó para alegrar este mundo 🖼️😇"></div>
+                            <div class="petal clickable-petal" data-message="🦋 Tu presencia transforma lo ordinario en algo mágico y extraordinario ✨🌟"></div>
+                            <div class="petal clickable-petal" data-message="🌺 Como este pétalo dorado, tu belleza interior ilumina todo a tu alrededor 💫💖"></div>
+                            <div class="petal clickable-petal" data-message="🎵 Tu risa es la sinfonía más hermosa que mis oídos han escuchado 🎼👂"></div>
+                            <div class="petal clickable-petal" data-message="🌟 Eres esa estrella que guía mi camino en las noches más oscuras 🧭🌙"></div>
+                            <div class="petal clickable-petal" data-message="🍯 Tu dulzura es como la miel más pura que endulza mi existencia 🐝💛"></div>
+                            <div class="petal clickable-petal" data-message="🌸 Como la primavera trae vida, tú traes color a mi mundo 🌼🎨"></div>
+                            <div class="petal clickable-petal" data-message="💝 Eres el regalo más hermoso que la vida me ha dado 🎁🙏"></div>
+                            <div class="petal clickable-petal" data-message="🌊 Tu energía positiva es como las olas del mar: infinita y refrescante 🏖️💙"></div>
+                            <div class="petal clickable-petal" data-message="⭐ En el libro de las personas especiales, tú tienes tu propio capítulo dorado 📖✨"></div>
+                            <div class="petal clickable-petal" data-message="👸 Eres simplemente perfecta, y me siento afortunado de conocerte 🌻💕"></div>
+                        </div>
+                        <div class="sunflower-center">
+                            <div class="pollen-glow"></div><div class="pollen-glow"></div><div class="pollen-glow"></div><div class="pollen-glow"></div>
+                            <div class="pollen-glow"></div><div class="pollen-glow"></div><div class="pollen-glow"></div><div class="pollen-glow"></div>
+                        </div>
+                        <div class="sunflower-overlay"></div>
+                    </div>
+                </div>
+                <div class="flower__line">
+                    <div class="flower__line__leaf flower__line__leaf--1"></div>
+                    <div class="flower__line__leaf flower__line__leaf--2"></div>
+                    <div class="flower__line__leaf flower__line__leaf--3"></div>
+                    <div class="flower__line__leaf flower__line__leaf--4"></div>
+                    <div class="flower__line__leaf flower__line__leaf--5"></div>
+                    <div class="flower__line__leaf flower__line__leaf--6"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <button class="action-button" onclick="createMagicalMoment()">Crear Momento Mágico</button>
+
+    <script>
+        // Sistema de efectos mágicos mejorado
+        function createMagicalMoment() {
+            const button = document.querySelector('.action-button');
+            const flowers = document.querySelectorAll('.flower');
+            
+            // Deshabilitar botón temporalmente
+            button.disabled = true;
+            button.style.background = 'linear-gradient(45deg, #cccccc, #999999)';
+            button.textContent = '🌻 Creando Magia... 🌻';
+            
+            // Efecto de resplandor secuencial en las flores
+            flowers.forEach((flower, index) => {
+                setTimeout(() => {
+                    flower.style.animation = `glowPulse 2s ease-in-out infinite, ${flower.style.animation}`;
+
+                    // Crear explosión de partículas desde cada flor
+                    const rect = flower.getBoundingClientRect();
+                    const centerX = rect.left + rect.width / 2;
+                    const centerY = rect.top + rect.height / 2;
+
+                    createParticleExplosion(centerX, centerY, 16);
+                    createWaveRipple(centerX, centerY);
+                    createFloatingHearts(centerX, centerY);
+
+                    // Remover efecto de resplandor después de un tiempo
+                    setTimeout(() => {
+                        flower.style.animation = flower.style.animation.replace('glowPulse 2s ease-in-out infinite, ', '');
+                    }, 3000);
+                }, index * 300);
+            });
+            
+            // Lluvia masiva de pétalos dorados
+            setTimeout(() => {
+                createGoldenPetalRain(100);
+            }, 1000);
+            
+            // Explosión central de partículas
+            setTimeout(() => {
+                const centerX = window.innerWidth / 2;
+                const centerY = window.innerHeight / 2;
+                createMegaParticleExplosion(centerX, centerY);
+            }, 1500);
+            
+            // Mostrar mensaje especial
+            setTimeout(() => {
+                showEnhancedMessage();
+                
+                // Restaurar botón
+                button.disabled = false;
+                button.style.background = 'linear-gradient(45deg, #ffd700, #ff8f00)';
+                button.textContent = 'Crear Momento Mágico';
+            }, 4000);
+        }
+
+        // Explosión de partículas desde un punto específico
+        function createParticleExplosion(centerX, centerY, count) {
+            for (let i = 0; i < count; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'magic-particle';
+                particle.style.left = centerX + 'px';
+                particle.style.top = centerY + 'px';
+                particle.style.transform = 'translate(-50%, -50%)';
+                
+                const angle = (i * (360 / count)) * Math.PI / 180;
+                const distance = 80 + Math.random() * 60;
+                const dx = Math.cos(angle) * distance;
+                const dy = Math.sin(angle) * distance;
+                
+                particle.style.setProperty('--dx', dx + 'px');
+                particle.style.setProperty('--dy', dy + 'px');
+                particle.style.animation = 'particleExplode 3s ease-out forwards';
+                
+                document.body.appendChild(particle);
+                
+                setTimeout(() => particle.remove(), 3000);
+            }
+        }
+
+        // Mega explosión central
+        function createMegaParticleExplosion(centerX, centerY) {
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.className = 'magic-particle';
+                    particle.style.left = centerX + 'px';
+                    particle.style.top = centerY + 'px';
+                    particle.style.transform = 'translate(-50%, -50%)';
+                    particle.style.width = (4 + Math.random() * 8) + 'px';
+                    particle.style.height = (4 + Math.random() * 8) + 'px';
+                    
+                    const angle = Math.random() * 360 * Math.PI / 180;
+                    const distance = 150 + Math.random() * 200;
+                    const dx = Math.cos(angle) * distance;
+                    const dy = Math.sin(angle) * distance;
+                    
+                    particle.style.setProperty('--dx', dx + 'px');
+                    particle.style.setProperty('--dy', dy + 'px');
+                    particle.style.animation = 'particleExplode 4s ease-out forwards';
+                    
+                    document.body.appendChild(particle);
+                    setTimeout(() => particle.remove(), 4000);
+                }, i * 30);
+            }
+        }
+
+        // Ondas expansivas
+        function createWaveRipple(centerX, centerY) {
+            for (let i = 0; i < 4; i++) {
+                setTimeout(() => {
+                    const wave = document.createElement('div');
+                    wave.className = 'wave-ripple';
+                    wave.style.left = centerX + 'px';
+                    wave.style.top = centerY + 'px';
+                    wave.style.transform = 'translate(-50%, -50%)';
+                    wave.style.width = '20px';
+                    wave.style.height = '20px';
+                    wave.style.animation = 'waveExpand 2s ease-out forwards';
+                    
+                    document.body.appendChild(wave);
+                    setTimeout(() => wave.remove(), 2000);
+                }, i * 250);
+            }
+        }
+
+        // Corazones y emojis flotantes
+        function createFloatingHearts(centerX, centerY) {
+            const emojis = ['💛', '🌻', '✨', '🌟', '💫', '🧡', '💖', '☀️'];
+            
+            for (let i = 0; i < 8; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'love-heart';
+                    heart.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    heart.style.left = centerX + 'px';
+                    heart.style.top = centerY + 'px';
+                    heart.style.transform = 'translate(-50%, -50%)';
+                    heart.style.fontSize = (16 + Math.random() * 12) + 'px';
+                    
+                    const angle = (i * 45) * Math.PI / 180;
+                    const distance = 100 + Math.random() * 150;
+                    const dx = Math.cos(angle) * distance;
+                    const dy = Math.sin(angle) * distance;
+                    
+                    heart.style.setProperty('--heart-dx', dx + 'px');
+                    heart.style.setProperty('--heart-dy', dy + 'px');
+                    
+                    document.body.appendChild(heart);
+                    setTimeout(() => heart.remove(), 4000);
+                }, i * 150);
+            }
+        }
+
+        // Lluvia de pétalos dorados
+        function createGoldenPetalRain(count) {
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const petal = document.createElement('div');
+                    petal.className = 'golden-petal';
+                    petal.style.left = Math.random() * 100 + '%';
+                    petal.style.top = '-50px';
+                    
+                    const size = Math.random() * 8 + 6;
+                    petal.style.width = size + 'px';
+                    petal.style.height = (size * 1.5) + 'px';
+                    
+                    const hue = 45 + Math.random() * 15;
+                    const saturation = 85 + Math.random() * 15;
+                    const lightness = 60 + Math.random() * 20;
+                    petal.style.background = `linear-gradient(45deg, 
+                        hsl(${hue}, ${saturation}%, ${lightness}%), 
+                        hsl(${hue + 10}, ${saturation}%, ${lightness - 10}%))`;
+                    
+                    petal.style.animation = `petalRain ${5 + Math.random() * 3}s linear forwards`;
+                    petal.style.animationDelay = Math.random() * 2 + 's';
+                    
+                    document.body.appendChild(petal);
+                    setTimeout(() => petal.remove(), 8000);
+                }, i * 50);
+            }
+        }
+
+        // Mensaje especial mejorado
+        function showEnhancedMessage() {
+            const messages = [
+        "Estos girasoles son como tú en mi día: simples, pero siempre logran alegrarme 🌻💛",
+        "Así como los girasoles siguen al sol, yo disfruto seguir compartiendo momentos contigo ☀️🌻",
+        "Un detalle sencillo, pero con toda la buena vibra y un poquito de cariño para ti ✨🌻",
+        "Que estos girasoles te acompañen como lo hace tu risa, iluminando todo a su alrededor 🌟💛",
+        "La magia está completa: cada girasol lleva guardado un pedacito de lo especial que eres para mí 🌻💫"
+            ];
+            
+            const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+            
+            const popup = document.createElement('div');
+            popup.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%) scale(0);
+                background: linear-gradient(135deg, 
+                    rgba(0,0,0,0.95), 
+                    rgba(20,20,20,0.95));
+                backdrop-filter: blur(20px);
+                padding: 30px;
+                border-radius: 20px;
+                border: 3px solid #ffd700;
+                color: #fff;
+                text-align: center;
+                font-size: 1.2em;
+                max-width: 90%;
+                z-index: 1002;
+                box-shadow: 
+                    0 30px 100px rgba(255,215,0,0.5),
+                    inset 0 1px 0 rgba(255,255,255,0.1);
+                animation: magicPopup 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+            `;
+            
+            popup.innerHTML = `
+                <div style="margin-bottom: 20px; font-size: 3em;">🌻✨🌻</div>
+                <p style="margin: 0; line-height: 1.6; font-weight: bold; color: #ffd700;">${randomMessage}</p>
+                <div style="margin-top: 20px; font-size: 0.7em; color: #ffed4a; font-style: italic;">
+                    Toca en cualquier lugar para continuar disfrutando de la magia
+                </div>
+            `;
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes magicPopup {
+                    0% { 
+                        transform: translate(-50%, -50%) scale(0) rotate(-360deg);
+                        opacity: 0;
+                    }
+                    60% {
+                        transform: translate(-50%, -50%) scale(1.1) rotate(10deg);
+                        opacity: 1;
+                    }
+                    100% { 
+                        transform: translate(-50%, -50%) scale(1) rotate(0deg);
+                        opacity: 1;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+            document.body.appendChild(popup);
+            
+            // Resplandor especial alrededor del mensaje
+            const glow = document.createElement('div');
+            glow.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 300px;
+                height: 300px;
+                background: radial-gradient(circle, 
+                    rgba(255,215,0,0.5) 0%, 
+                    rgba(255,215,0,0.3) 40%, 
+                    transparent 70%);
+                border-radius: 50%;
+                z-index: 1001;
+                animation: magicGlow 4s ease-in-out infinite;
+                pointer-events: none;
+            `;
+            
+            const glowStyle = document.createElement('style');
+            glowStyle.textContent = `
+                @keyframes magicGlow {
+                    0%, 100% { 
+                        transform: translate(-50%, -50%) scale(1);
+                        opacity: 0.6;
+                    }
+                    50% { 
+                        transform: translate(-50%, -50%) scale(1.4);
+                        opacity: 0.3;
+                    }
+                }
+            `;
+            document.head.appendChild(glowStyle);
+            document.body.appendChild(glow);
+            
+            // Función para cerrar
+            const closePopup = () => {
+                popup.style.animation = 'magicPopup 1s ease-in reverse';
+                glow.style.opacity = '0';
+                glow.style.transition = 'opacity 1s ease-in';
+                setTimeout(() => {
+                    popup.remove();
+                    glow.remove();
+                    style.remove();
+                    glowStyle.remove();
+                }, 1000);
+            };
+            
+            popup.addEventListener('click', closePopup);
+            document.addEventListener('click', function closeOnClickOutside(e) {
+                if (!popup.contains(e.target)) {
+                    closePopup();
+                    document.removeEventListener('click', closeOnClickOutside);
+                }
+            });
+            
+            setTimeout(() => {
+                if (popup.parentNode) {
+                    closePopup();
+                }
+            }, 8000);
+        }
+
+        // Detectar si es dispositivo móvil
+        function isMobile() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                   window.innerWidth <= 768;
+        }
+
+        // Control del widget de SoundCloud
+        let soundcloudWidget = null;
+
+        // Inicializar widget de SoundCloud
+        function initSoundCloudWidget() {
+            // Cargar API de SoundCloud
+            if (typeof SC === 'undefined') {
+                const script = document.createElement('script');
+                script.src = 'https://w.soundcloud.com/player/api.js';
+                script.onload = () => {
+                    setupSoundCloudWidget();
+                };
+                document.head.appendChild(script);
+            } else {
+                setupSoundCloudWidget();
+            }
+        }
+
+        function setupSoundCloudWidget() {
+            const iframeElement = document.getElementById('soundcloud-widget');
+            soundcloudWidget = SC.Widget(iframeElement);
+
+            soundcloudWidget.bind(SC.Widget.Events.READY, () => {
+                console.log('SoundCloud widget listo - iniciando reproducción automática');
+                soundcloudWidget.setVolume(50); // Volumen al 50%
+
+                // Iniciar reproducción automática inmediatamente
+                setTimeout(() => {
+                    soundcloudWidget.play();
+                }, 500);
+            });
+
+            soundcloudWidget.bind(SC.Widget.Events.PLAY, () => {
+                console.log('Música de SoundCloud reproduciéndose automáticamente');
+            });
+
+            soundcloudWidget.bind(SC.Widget.Events.ERROR, () => {
+                console.log('Error en SoundCloud, intentando audio local');
+                const audio = document.getElementById('backgroundMusic');
+                if (audio) {
+                    audio.play().catch(e => console.log('Audio local también falló:', e));
+                }
+            });
+        }
+
+        // Función para activar la música de SoundCloud
+        function playSoundCloudMusic() {
+            if (soundcloudWidget) {
+                soundcloudWidget.play();
+                return true;
+            }
+            return false;
+        }
+
+        // Función para forzar reproducción automática
+        function forceAutoPlay() {
+            // Intentar con SoundCloud primero
+            if (soundcloudWidget) {
+                soundcloudWidget.play();
+                console.log('Iniciando reproducción automática de SoundCloud');
+            }
+
+            // También intentar con audio local como backup
+            const audio = document.getElementById('backgroundMusic');
+            if (audio) {
+                audio.volume = 0.4;
+                audio.play().catch(error => {
+                    console.log('Audio local no pudo reproducirse:', error);
+                });
+            }
+        }
+
+        // Función para iniciar el audio (ya no necesaria, pero mantenemos por compatibilidad)
+        function playBackgroundMusic() {
+            forceAutoPlay();
+        }
+
+        // Crear botón de audio manual
+        function createAudioButton() {
+            // Evitar crear múltiples botones
+            if (document.getElementById('audioButton')) return;
+
+            const audioBtn = document.createElement('button');
+            audioBtn.id = 'audioButton';
+            audioBtn.innerHTML = '🎵 Escuchar Flores Amarillas';
+
+            // Estilos específicos para móvil vs desktop
+            const isMobileDevice = isMobile();
+
+            audioBtn.style.cssText = `
+                position: fixed;
+                bottom: ${isMobileDevice ? '20px' : 'auto'};
+                top: ${isMobileDevice ? 'auto' : '20px'};
+                left: ${isMobileDevice ? '50%' : 'auto'};
+                right: ${isMobileDevice ? 'auto' : '20px'};
+                transform: ${isMobileDevice ? 'translateX(-50%)' : 'none'};
+                background: linear-gradient(45deg, #ffd700, #ff8f00);
+                border: none;
+                padding: ${isMobileDevice ? '12px 24px' : '12px 18px'};
+                border-radius: 25px;
+                color: #2c3e50;
+                font-weight: bold;
+                cursor: pointer;
+                z-index: 1000;
+                box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+                transition: all 0.3s ease;
+                animation: pulseButton 2s infinite;
+                font-size: ${isMobileDevice ? '16px' : '12px'};
+                user-select: none;
+                -webkit-tap-highlight-color: transparent;
+                touch-action: manipulation;
+                white-space: nowrap;
+            `;
+
+            // Eventos táctiles para móvil
+            audioBtn.ontouchstart = (e) => {
+                e.preventDefault();
+                audioBtn.style.transform = 'scale(0.95)';
+            };
+
+            audioBtn.ontouchend = (e) => {
+                e.preventDefault();
+                audioBtn.style.transform = 'scale(1)';
+                activateAudio();
+            };
+
+            // Eventos de mouse para desktop
+            if (!isMobileDevice) {
+                audioBtn.onmouseover = () => {
+                    audioBtn.style.transform = 'translateY(-2px)';
+                    audioBtn.style.boxShadow = '0 6px 20px rgba(255, 215, 0, 0.6)';
+                };
+
+                audioBtn.onmouseout = () => {
+                    audioBtn.style.transform = 'translateY(0)';
+                    audioBtn.style.boxShadow = '0 4px 15px rgba(255, 215, 0, 0.4)';
+                };
+            }
+
+            audioBtn.onclick = (e) => {
+                e.preventDefault();
+                activateAudio();
+            };
+
+            // Función para activar audio
+            function activateAudio() {
+                audioBtn.innerHTML = '🔄 Activando...';
+                audioBtn.style.background = '#ffaa00';
+                audioBtn.disabled = true;
+
+                // Intentar reproducir con SoundCloud widget primero
+                if (playSoundCloudMusic()) {
+                    audioBtn.innerHTML = '🎵 ¡Flores Amarillas!';
+                    audioBtn.style.background = '#4caf50';
+
+                    setTimeout(() => {
+                        audioBtn.style.opacity = '0';
+                        setTimeout(() => {
+                            if (audioBtn.parentNode) {
+                                audioBtn.remove();
+                            }
+                        }, 500);
+                    }, 2000);
+                } else {
+                    // Fallback a audio local si no funciona SoundCloud
+                    const audio = document.getElementById('backgroundMusic');
+                    audio.volume = 0.6;
+                    audio.play().then(() => {
+                        audioBtn.innerHTML = '🎵 ¡Música Activada!';
+                        audioBtn.style.background = '#4caf50';
+
+                        setTimeout(() => {
+                            audioBtn.style.opacity = '0';
+                            setTimeout(() => {
+                                if (audioBtn.parentNode) {
+                                    audioBtn.remove();
+                                }
+                            }, 500);
+                        }, 1500);
+                    }).catch(err => {
+                        console.error('Error con audio:', err);
+                        audioBtn.innerHTML = '❌ Música no disponible';
+                        audioBtn.style.background = '#ff6b6b';
+                        audioBtn.disabled = false;
+
+                        setTimeout(() => {
+                            audioBtn.innerHTML = '🎵 Reintentar';
+                            audioBtn.style.background = 'linear-gradient(45deg, #ffd700, #ff8f00)';
+                            audioBtn.style.color = '#2c3e50';
+                        }, 3000);
+                    });
+                }
+            }
+
+            // Animación del botón
+            if (!document.getElementById('pulseButtonStyle')) {
+                const style = document.createElement('style');
+                style.id = 'pulseButtonStyle';
+                style.textContent = `
+                    @keyframes pulseButton {
+                        0%, 100% { transform: scale(1); }
+                        50% { transform: scale(1.05); }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+
+            document.body.appendChild(audioBtn);
+        }
+
+        window.onload = () => {
+            document.body.classList.remove('not-loaded');
+
+            // Configurar eventos de click en pétalos
+            setupPetalClickEvents();
+
+            // Inicializar widget de SoundCloud inmediatamente
+            initSoundCloudWidget();
+
+            // Intentar reproducción automática en todos los dispositivos
+            setTimeout(() => {
+                forceAutoPlay();
+            }, 1000);
+
+            // Segundo intento después de más tiempo
+            setTimeout(() => {
+                forceAutoPlay();
+            }, 3000);
+
+            // Solo mostrar botón como último recurso si realmente no funciona
+            setTimeout(() => {
+                // Verificar si la música está sonando
+                if (soundcloudWidget) {
+                    soundcloudWidget.isPaused((paused) => {
+                        if (paused) {
+                            console.log('Música no se reprodujo automáticamente, creando botón');
+                            createAudioButton();
+                        }
+                    });
+                } else {
+                    createAudioButton();
+                }
+            }, 5000);
+        };
+
+        // Detectar cuando el usuario interactúa por primera vez y forzar reproducción
+        document.addEventListener('touchstart', function() {
+            forceAutoPlay();
+        }, { once: true });
+
+        document.addEventListener('click', function() {
+            forceAutoPlay();
+        }, { once: true });
+
+        // Sistema de mensajes para pétalos clickeables
+        function showPetalMessage(message) {
+            // Remover mensaje anterior si existe
+            const existingPopup = document.querySelector('.petal-message-popup');
+            if (existingPopup) {
+                existingPopup.remove();
+            }
+
+            const popup = document.createElement('div');
+            popup.className = 'petal-message-popup';
+            popup.innerHTML = `
+                <div style="margin-bottom: 10px; font-size: 1.5em;">🌻✨🌻</div>
+                <p style="margin: 0; font-family: 'Georgia', serif;">${message}</p>
+                <div style="margin-top: 15px; font-size: 0.6em; opacity: 0.8; font-style: italic;">
+                    Toca en cualquier lugar para cerrar
+                </div>
+            `;
+
+            document.body.appendChild(popup);
+
+            // Crear efectos de partículas alrededor del mensaje
+            createMessageParticles();
+
+            // Función para cerrar el popup
+            const closePopup = () => {
+                popup.style.animation = 'petalPopup 0.8s ease-in reverse';
+                setTimeout(() => {
+                    if (popup.parentNode) {
+                        popup.remove();
+                    }
+                }, 800);
+            };
+
+            // Eventos para cerrar
+            popup.addEventListener('click', closePopup);
+            document.addEventListener('click', function closeOnClickOutside(e) {
+                if (!popup.contains(e.target)) {
+                    closePopup();
+                    document.removeEventListener('click', closeOnClickOutside);
+                }
+            });
+
+            // Auto-cerrar después de 6 segundos
+            setTimeout(() => {
+                if (popup.parentNode) {
+                    closePopup();
+                }
+            }, 6000);
+        }
+
+        // Crear partículas alrededor del mensaje
+        function createMessageParticles() {
+            const emojis = ['💛', '🌻', '✨', '🌟', '💫', '🧡', '💖', '☀️', '🦋', '🌸'];
+
+            for (let i = 0; i < 12; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    particle.style.cssText = `
+                        position: fixed;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        font-size: ${16 + Math.random() * 8}px;
+                        pointer-events: none;
+                        z-index: 1004;
+                        animation: messageParticleFloat 4s ease-out forwards;
+                    `;
+
+                    const angle = (i * 30) * Math.PI / 180;
+                    const distance = 150 + Math.random() * 100;
+                    const dx = Math.cos(angle) * distance;
+                    const dy = Math.sin(angle) * distance;
+
+                    particle.style.setProperty('--dx', dx + 'px');
+                    particle.style.setProperty('--dy', dy + 'px');
+
+                    document.body.appendChild(particle);
+                    setTimeout(() => particle.remove(), 4000);
+                }, i * 100);
+            }
+        }
+
+        // Agregar animación para las partículas del mensaje
+        if (!document.getElementById('messageParticleStyle')) {
+            const style = document.createElement('style');
+            style.id = 'messageParticleStyle';
+            style.textContent = `
+                @keyframes messageParticleFloat {
+                    0% {
+                        opacity: 0;
+                        transform: translate(-50%, -50%) scale(0);
+                    }
+                    20% {
+                        opacity: 1;
+                        transform: translate(-50%, -50%) scale(1.2);
+                    }
+                    100% {
+                        opacity: 0;
+                        transform: translate(-50%, -50%) translate(var(--dx), var(--dy)) scale(0.8) rotate(360deg);
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        // Agregar eventos de click a todos los pétalos clickeables
+        function setupPetalClickEvents() {
+            const clickablePetals = document.querySelectorAll('.clickable-petal');
+
+            clickablePetals.forEach((petal, index) => {
+                petal.addEventListener('click', function(e) {
+                    e.stopPropagation();
+
+                    const message = this.getAttribute('data-message');
+                    if (message) {
+                        showPetalMessage(message);
+
+                        // Efecto visual en el pétalo clickeado
+                        this.style.animation = 'petalClick 0.6s ease-out';
+
+                        // Crear partículas desde el pétalo clickeado
+                        const rect = this.getBoundingClientRect();
+                        const centerX = rect.left + rect.width / 2;
+                        const centerY = rect.top + rect.height / 2;
+                        createPetalClickEffect(centerX, centerY);
+
+                        setTimeout(() => {
+                            this.style.animation = '';
+                        }, 600);
+                    }
+                });
+
+                // Efecto hover especial
+                petal.addEventListener('mouseenter', function() {
+                    this.style.filter = 'brightness(1.4) saturate(1.3)';
+                    this.style.transform = 'scale(1.15)';
+                });
+
+                petal.addEventListener('mouseleave', function() {
+                    this.style.filter = '';
+                    this.style.transform = '';
+                });
+            });
+        }
+
+        // Efecto de click en pétalo
+        function createPetalClickEffect(x, y) {
+            for (let i = 0; i < 8; i++) {
+                const particle = document.createElement('div');
+                particle.style.cssText = `
+                    position: fixed;
+                    left: ${x}px;
+                    top: ${y}px;
+                    width: 6px;
+                    height: 6px;
+                    background: #ffd700;
+                    border-radius: 50%;
+                    pointer-events: none;
+                    z-index: 1003;
+                    box-shadow: 0 0 10px #ffd700;
+                `;
+
+                const angle = (i * 45) * Math.PI / 180;
+                const distance = 50 + Math.random() * 30;
+                const dx = Math.cos(angle) * distance;
+                const dy = Math.sin(angle) * distance;
+
+                particle.style.setProperty('--dx', dx + 'px');
+                particle.style.setProperty('--dy', dy + 'px');
+                particle.style.animation = 'petalClickParticle 1.5s ease-out forwards';
+
+                document.body.appendChild(particle);
+                setTimeout(() => particle.remove(), 1500);
+            }
+        }
+
+        // Agregar animaciones CSS para efectos de pétalo
+        if (!document.getElementById('petalEffectsStyle')) {
+            const style = document.createElement('style');
+            style.id = 'petalEffectsStyle';
+            style.textContent = `
+                @keyframes petalClick {
+                    0% { transform: scale(1); }
+                    50% { transform: scale(1.3) rotate(10deg); }
+                    100% { transform: scale(1) rotate(0deg); }
+                }
+
+                @keyframes petalClickParticle {
+                    0% {
+                        opacity: 1;
+                        transform: translate(-50%, -50%) scale(1);
+                    }
+                    100% {
+                        opacity: 0;
+                        transform: translate(-50%, -50%) translate(var(--dx), var(--dy)) scale(0.3);
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        // Detectar cuando la ventana obtiene foco y intentar reproducir
+        window.addEventListener('focus', function() {
+            setTimeout(forceAutoPlay, 500);
+        });
+
+        // Intentar reproducir cuando se hace visible la página
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                setTimeout(forceAutoPlay, 500);
+            }
+        });
+
+        // Control de volumen con la rueda del mouse
+        document.addEventListener('wheel', (e) => {
+            const audio = document.getElementById('backgroundMusic');
+            if (e.ctrlKey) {
+                e.preventDefault();
+                if (e.deltaY < 0) {
+                    audio.volume = Math.min(1, audio.volume + 0.1);
+                } else {
+                    audio.volume = Math.max(0, audio.volume - 0.1);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

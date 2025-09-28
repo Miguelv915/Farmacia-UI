@@ -17,6 +17,8 @@ import {
   treeViewCustomizations,
 } from './Extras/dashboard/theme/customizations';
 import { ComponenteArticulos } from '../view/articulo';
+import { ComponenteProveedores } from '../view/proveedor';
+import { ComponenteClientes } from '../view/Cliente';
 import NotificarUsuario from '../view/alerta';
 import AppNavbar from './Extras/dashboard/components/AppNavbar';
 import Header from './Extras/dashboard/components/Header';
@@ -73,7 +75,9 @@ export default function Dashboard(props) {
                 <Routes>
                   <Route path="/" element={<MainGrid />} />
                   <Route path="/articulo" element={<ComponenteArticulos />} />
+                  <Route path="/proveedor" element={<ComponenteProveedores />} />
                   <Route path="/alerta" element={<NotificarUsuario />} />
+                  <Route path="/clientes" element={<ComponenteClientes />} />
                 </Routes>
 
 

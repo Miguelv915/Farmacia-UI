@@ -1,0 +1,365 @@
+# Modelo de Datos - Sistema de Ventas con Control de Lotes
+
+## Entidades Principales
+
+### 1. **Productos**
+```sql
+CREATE TABLE productos (
+    id_producto INT PRIMARY KEY AUTO_INCREMENT,
+    codigo_producto VARCHAR(50) UNIQUE NOT NULL,
+    nombre VARCHAR(255) NOT NULL,
+    descripcion TEXT,
+    categoria_id INT,
+    unidad_medida VARCHAR(20), -- 'unidad', 'kg', 'litro', etc.
+    estado ENUM('activo', 'inactivo') DEFAULT 'activo',
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+### 2. **Lotes de Inventario**
+```sql
+CREATE TABLE lotes_inventario (
+    id_lote INT PRIMARY KEY AUTO_INCREMENT,
+    producto_id INT NOT NULL,
+    numero_lote VARCHAR(100) NOT NULL,
+    precio_compra DECIMAL(10,2) NOT NULL,
+    cantidad_inicial INT NOT NULL,
+    cantidad_disponible INT NOT NULL,
+    fecha_compra DATE NOT NULL,
+    fecha_vencimiento DATE,
+    proveedor_id INT,
+    numero_factura_compra VARCHAR(100),
+    costo_adicional DECIMAL(10,2) DEFAULT 0, -- fletes, impuestos, etc.
+    estado ENUM('disponible', 'agotado', 'vencido') DEFAULT 'disponible',
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (producto_id) REFERENCES productos(id_producto),
+    UNIQUE KEY unique_lote_producto (producto_id, numero_lote)
+);
+```
+
+### 3. **Ventas (Cabecera)**
+```sql
+CREATE TABLE ventas (
+    id_venta INT PRIMARY KEY AUTO_INCREMENT,
+    numero_factura VARCHAR(100) UNIQUE NOT NULL,
+    cliente_id INT,
+    fecha_venta DATETIME NOT NULL,
+    subtotal DECIMAL(12,2) NOT NULL,
+    impuestos DECIMAL(12,2) DEFAULT 0,
+    descuento DECIMAL(12,2) DEFAULT 0,
+    total DECIMAL(12,2) NOT NULL,
+    metodo_pago VARCHAR(50),
+    estado ENUM('pendiente', 'pagada', 'anulada') DEFAULT 'pendiente',
+    vendedor_id INT,
+    observaciones TEXT,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+### 4. **Detalle de Ventas por Lote**
+```sql
+CREATE TABLE detalle_ventas_lote (
+    id_detalle INT PRIMARY KEY AUTO_INCREMENT,
+    venta_id INT NOT NULL,
+    producto_id INT NOT NULL,
+    lote_id INT NOT NULL,
+    cantidad_vendida INT NOT NULL,
+    precio_venta_unitario DECIMAL(10,2) NOT NULL,
+    precio_compra_unitario DECIMAL(10,2) NOT NULL, -- del lote
+    subtotal DECIMAL(12,2) NOT NULL, -- cantidad * precio_venta
+    ganancia_unitaria DECIMAL(10,2) GENERATED ALWAYS AS (precio_venta_unitario - precio_compra_unitario) STORED,
+    ganancia_total DECIMAL(12,2) GENERATED ALWAYS AS (cantidad_vendida * (precio_venta_unitario - precio_compra_unitario)) STORED,
+    
+    FOREIGN KEY (venta_id) REFERENCES ventas(id_venta),
+    FOREIGN KEY (producto_id) REFERENCES productos(id_producto),
+    FOREIGN KEY (lote_id) REFERENCES lotes_inventario(id_lote)
+);
+```
+
+### 5. **Entidades Complementarias**
+
+#### Clientes
+```sql
+CREATE TABLE clientes (
+    id_cliente INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(255) NOT NULL,
+    email VARCHAR(255),
+    telefono VARCHAR(20),
+    direccion TEXT,
+    documento VARCHAR(50),
+    tipo_documento VARCHAR(20),
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+#### Proveedores
+```sql
+CREATE TABLE proveedores (
+    id_proveedor INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(255) NOT NULL,
+    contacto VARCHAR(255),
+    email VARCHAR(255),
+    telefono VARCHAR(20),
+    direccion TEXT,
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+## Consultas Importantes para Análisis de Ganancias
+
+### 1. Ganancia por Venta Específica
+```sql
+SELECT 
+    v.numero_factura,
+    v.fecha_venta,
+    c.nombre as cliente,
+    p.nombre as producto,
+    l.numero_lote,
+    dvl.cantidad_vendida,
+    dvl.precio_compra_unitario,
+    dvl.precio_venta_unitario,
+    dvl.ganancia_unitaria,
+    dvl.ganancia_total
+FROM detalle_ventas_lote dvl
+JOIN ventas v ON dvl.venta_id = v.id_venta
+JOIN productos p ON dvl.producto_id = p.id_producto
+JOIN lotes_inventario l ON dvl.lote_id = l.id_lote
+LEFT JOIN clientes c ON v.cliente_id = c.id_cliente
+WHERE v.id_venta = ?;
+```
+
+### 2. Ganancia por Producto en un Período
+```sql
+SELECT 
+    p.nombre as producto,
+    SUM(dvl.cantidad_vendida) as total_vendido,
+    AVG(dvl.precio_compra_unitario) as precio_compra_promedio,
+    AVG(dvl.precio_venta_unitario) as precio_venta_promedio,
+    SUM(dvl.ganancia_total) as ganancia_total,
+    AVG(dvl.ganancia_unitaria) as ganancia_promedio_unitaria
+FROM detalle_ventas_lote dvl
+JOIN ventas v ON dvl.venta_id = v.id_venta
+JOIN productos p ON dvl.producto_id = p.id_producto
+WHERE v.fecha_venta BETWEEN ? AND ?
+GROUP BY dvl.producto_id, p.nombre
+ORDER BY ganancia_total DESC;
+```
+
+### 3. Rentabilidad por Lote
+```sql
+SELECT 
+    p.nombre as producto,
+    l.numero_lote,
+    l.precio_compra,
+    l.cantidad_inicial,
+    l.cantidad_disponible,
+    (l.cantidad_inicial - l.cantidad_disponible) as cantidad_vendida,
+    COALESCE(SUM(dvl.ganancia_total), 0) as ganancia_obtenida,
+    CASE 
+        WHEN l.cantidad_disponible = 0 THEN 'Agotado'
+        WHEN l.cantidad_disponible > 0 THEN 'Disponible'
+    END as estado_lote
+FROM lotes_inventario l
+JOIN productos p ON l.producto_id = p.id_producto
+LEFT JOIN detalle_ventas_lote dvl ON l.id_lote = dvl.lote_id
+GROUP BY l.id_lote, p.nombre, l.numero_lote, l.precio_compra, l.cantidad_inicial, l.cantidad_disponible
+ORDER BY ganancia_obtenida DESC;
+```
+
+## Triggers para Mantener Consistencia
+
+### 1. Actualizar Inventario Disponible
+```sql
+DELIMITER //
+CREATE TRIGGER actualizar_inventario_venta
+AFTER INSERT ON detalle_ventas_lote
+FOR EACH ROW
+BEGIN
+    UPDATE lotes_inventario 
+    SET cantidad_disponible = cantidad_disponible - NEW.cantidad_vendida,
+        estado = CASE 
+            WHEN cantidad_disponible - NEW.cantidad_vendida <= 0 THEN 'agotado'
+            ELSE 'disponible'
+        END
+    WHERE id_lote = NEW.lote_id;
+END//
+DELIMITER ;
+```
+
+## Índices Recomendados
+
+```sql
+-- Para consultas de ventas por fecha
+CREATE INDEX idx_ventas_fecha ON ventas(fecha_venta);
+
+-- Para consultas de lotes por producto
+CREATE INDEX idx_lotes_producto ON lotes_inventario(producto_id, estado);
+
+-- Para consultas de detalle por venta
+CREATE INDEX idx_detalle_venta ON detalle_ventas_lote(venta_id);
+
+-- Para consultas de detalle por lote
+CREATE INDEX idx_detalle_lote ON detalle_ventas_lote(lote_id);
+```
+
+## Consideraciones Adicionales
+
+1. **Control FIFO/LIFO**: Puedes agregar un campo `metodo_salida` en la tabla productos para definir si usar FIFO o LIFO por producto.
+
+2. **Costos Adicionales**: El campo `costo_adicional` en lotes permite incluir fletes, seguros, etc., para un cálculo más preciso de la ganancia.
+
+3. **Auditoría**: Considera agregar tablas de auditoría para rastrear cambios en precios y movimientos de inventario.
+
+4. **Alertas de Vencimiento**: Puedes crear vistas o procedimientos para alertar sobre productos próximos a vencer.
+
+5. **Reportes de Rotación**: Este modelo permite calcular la rotación de inventario por lote y producto.
+
+Este modelo te permitirá tener un control preciso de tus ganancias por cada artículo vendido, considerando el precio específico del lote del cual se vendió el producto.
+
+## Diagrama de Entidad-Relación (ERD)
+
+```mermaid
+erDiagram
+    PRODUCTOS ||--o{ LOTES_INVENTARIO : tiene
+    PRODUCTOS ||--o{ DETALLE_VENTAS_LOTE : incluye
+    LOTES_INVENTARIO ||--o{ DETALLE_VENTAS_LOTE : consume
+    VENTAS ||--o{ DETALLE_VENTAS_LOTE : contiene
+    CLIENTES ||--o{ VENTAS : realiza
+    PROVEEDORES ||--o{ LOTES_INVENTARIO : suministra
+    CATEGORIAS ||--o{ PRODUCTOS : clasifica
+    VENDEDORES ||--o{ VENTAS : gestiona
+
+    PRODUCTOS {
+        int id_producto PK
+        string codigo_producto UKc:\Users\ALVAREZ BOHL\Downloads\DiagrmaBDFarmacia_2025-09-28T04_34_54.597Z.sql
+        string nombre
+        text descripcion
+        int categoria_id FK
+        string unidad_medida
+        enum estado
+        timestamp fecha_creacion
+    }
+
+    LOTES_INVENTARIO {
+        int id_lote PK
+        int producto_id FK
+        string numero_lote
+        decimal precio_compra
+        int cantidad_inicial
+        int cantidad_disponible
+        date fecha_compra
+        date fecha_vencimiento
+        int proveedor_id FK
+        string numero_factura_compra
+        decimal costo_adicional
+        enum estado
+        timestamp fecha_creacion
+    }
+
+    VENTAS {
+        int id_venta PK
+        string numero_factura UK
+        int cliente_id FK
+        datetime fecha_venta
+        decimal subtotal
+        decimal impuestos
+        decimal descuento
+        decimal total
+        string metodo_pago
+        enum estado
+        int vendedor_id FK
+        text observaciones
+        timestamp fecha_creacion
+    }
+
+    DETALLE_VENTAS_LOTE {
+        int id_detalle PK
+        int venta_id FK
+        int producto_id FK
+        int lote_id FK
+        int cantidad_vendida
+        decimal precio_venta_unitario
+        decimal precio_compra_unitario
+        decimal subtotal
+        decimal ganancia_unitaria "CALCULATED"
+        decimal ganancia_total "CALCULATED"
+    }
+
+    CLIENTES {
+        int id_cliente PK
+        string nombre
+        string email
+        string telefono
+        text direccion
+        string documento
+        string tipo_documento
+        timestamp fecha_registro
+    }
+
+    PROVEEDORES {
+        int id_proveedor PK
+        string nombre
+        string contacto
+        string email
+        string telefono
+        text direccion
+        timestamp fecha_registro
+    }
+
+    CATEGORIAS {
+        int id_categoria PK
+        string nombre
+        text descripcion
+        enum estado
+    }
+
+    VENDEDORES {
+        int id_vendedor PK
+        string nombre
+        string email
+        string telefono
+        enum estado
+        timestamp fecha_registro
+    }
+```
+
+## Flujo de Datos Principal
+
+```mermaid
+flowchart TD
+    A[Registro de Producto] --> B[Compra - Crear Lote]
+    B --> C[Lote en Inventario]
+    C --> D[Venta de Producto]
+    D --> E{¿Hay stock en lote?}
+    E -->|Sí| F[Reducir cantidad disponible]
+    E -->|No| G[Buscar otro lote disponible]
+    G --> E
+    F --> H[Registrar detalle venta]
+    H --> I[Calcular ganancia automática]
+    I --> J[Actualizar estado lote si se agota]
+    
+    style A fill:#e1f5fe
+    style B fill:#f3e5f5
+    style D fill:#e8f5e8
+    style I fill:#fff3e0
+    style J fill:#fce4ec
+```
+
+## Vista Simplificada de Relaciones Clave
+
+```mermaid
+graph LR
+    P[PRODUCTOS] --> L[LOTES_INVENTARIO]
+    L --> DVL[DETALLE_VENTAS_LOTE]
+    V[VENTAS] --> DVL
+    P --> DVL
+    
+    DVL --> |Calcula| G[GANANCIA POR VENTA]
+    
+    L --> |Precio Compra| G
+    DVL --> |Precio Venta| G
+    
+    style G fill:#4caf50,color:#fff
+    style DVL fill:#2196f3,color:#fff
+```

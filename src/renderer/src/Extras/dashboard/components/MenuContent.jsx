@@ -9,6 +9,7 @@ import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import AnalyticsRoundedIcon from '@mui/icons-material/AnalyticsRounded';
 import PeopleRoundedIcon from '@mui/icons-material/PeopleRounded';
 import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
+import BusinessRoundedIcon from '@mui/icons-material/BusinessRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
@@ -46,7 +47,9 @@ const secondaryListItems = [
 const mainListItems = [
   { text: 'Dashboard', icon: <HomeRoundedIcon />, to: '/' },
   { text: 'Artículos', icon: <AssignmentRoundedIcon />, to: '/articulo' },
+  { text: 'Proveedores', icon: <BusinessRoundedIcon />, to: '/proveedor' },
   { text: 'Alertas', icon: <InfoRoundedIcon />, to: '/alerta' },
+  { text: 'Cleintes', icon: <InfoRoundedIcon />, to: '/clientes' },
 ];
 
 export default function MenuContent() {
@@ -59,7 +62,7 @@ export default function MenuContent() {
             <ListItemButton
               component={Link}
               to={item.to}
-              selected={index === 0}
+              selected={index === 2}
             >
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
