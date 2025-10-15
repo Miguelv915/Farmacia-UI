@@ -32,6 +32,16 @@ const api = {
     actualizar: (data) => ipcRenderer.invoke('actualizar-cliente', data),
   },
 
+  compras: {
+    insertar: (data) => ipcRenderer.invoke('insertar-compra', data),
+    listar: () => ipcRenderer.invoke('listar-compras'),
+    obtenerDetalles: (id) => ipcRenderer.invoke('obtener-detalles-compra', id),
+    eliminar: (id) => ipcRenderer.invoke('eliminar-compra', id),
+    actualizar: (data) => ipcRenderer.invoke('actualizar-compra', data),
+    listarProveedores: () => ipcRenderer.invoke('listar-proveedores-compra'),
+    listarProductos: () => ipcRenderer.invoke('listar-productos-compra'),
+  },
+
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

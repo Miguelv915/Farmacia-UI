@@ -7,6 +7,7 @@ const { ipcMain } = require('electron');
 // import { insertarUsuario, obtenerUsuarios } from './DB/Queries/Usuario';
 
 
+
   function setupIPCHandlers() {
   // ipcMain.handle('insertar-usuario', async (event, { nombre, email }) => {
   //   try {

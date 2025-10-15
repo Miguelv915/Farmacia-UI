@@ -1,0 +1,172 @@
+# INFORME DEL PROYECTO - FARMACIA-UI
+
+## 1. DESCRIPCIÓN GENERAL
+
+**Farmacia-UI** es una aplicación de escritorio multiplataforma desarrollada con Electron para la gestión integral de una farmacia. El sistema permite administrar inventario, ventas, compras, clientes y proveedores mediante una interfaz moderna y una base de datos local SQLite.
+
+---
+
+## 2. ARQUITECTURA Y TECNOLOGÍAS
+
+### Stack Tecnológico Principal
+- **Electron**: Framework para aplicaciones de escritorio multiplataforma (Windows, macOS, Linux)
+- **Vite**: Herramienta de construcción y bundler para desarrollo rápido
+- **React**: Biblioteca de JavaScript para la construcción de interfaces de usuario
+- **SQLite**: Base de datos relacional embebida para persistencia local de datos
+- **Node.js**: Entorno de ejecución JavaScript del lado del servidor
+
+### Herramientas de Desarrollo
+- **ESLint**: Análisis estático de código para identificar patrones problemáticos
+- **Prettier**: Formateador automático de código para mantener consistencia
+- **Electron Builder**: Empaquetado y distribución de la aplicación
+
+---
+
+## 3. ESTRUCTURA DEL PROYECTO
+
+### Carpetas Principales
+
+```
+Farmacia-UI/
+├── src/
+│   ├── main/              # Proceso principal de Electron (backend)
+│   │   ├── Controller/    # Controladores de lógica de negocio
+│   │   ├── handlers/      # Manejadores IPC para comunicación con renderer
+│   │   ├── eventos.js     # Gestión de eventos del sistema
+│   │   └── index.js       # Punto de entrada del proceso principal
+│   ├── preload/           # Scripts de preload para comunicación segura
+│   │   └── index.js       # API expuesta al renderer
+│   └── renderer/          # Proceso de renderizado (frontend)
+│       ├── src/
+│       │   ├── Extras/    # Componentes adicionales (dashboard, etc.)
+│       │   ├── view/      # Vistas principales de la aplicación
+│       │   └── App.jsx    # Componente raíz de React
+│       └── index.html     # HTML base
+├── build/                 # Recursos para construcción del instalador
+├── resources/             # Recursos estáticos (iconos, imágenes)
+└── .vscode/              # Configuración del editor
+```
+
+### Archivos de Configuración
+
+- **package.json**: Definición de dependencias, scripts y metadatos del proyecto
+- **electron.vite.config.mjs**: Configuración de Vite para Electron
+- **electron-builder.yml**: Configuración para empaquetado y distribución
+- **.eslintrc.cjs**: Reglas de linting para JavaScript/JSX
+- **.prettierrc.yaml**: Reglas de formateo de código
+- **.env**: Variables de entorno (credenciales, configuraciones)
+
+### Archivos de Datos
+
+- **farmaciaDB.json / ejemploBD.json**: Esquemas o datos de ejemplo para la base de datos
+- **DiagrmaBDFarmacia_*.sql**: Scripts SQL con el esquema de la base de datos SQLite
+- **NotasFarmacia.txt**: Documentación interna y notas de desarrollo
+
+---
+
+## 4. FUNCIONALIDADES PRINCIPALES
+
+### Módulos Implementados
+
+1. **Gestión de Artículos/Productos**
+   - CRUD completo de productos farmacéticos
+   - Control de inventario y stock
+   - Categorización y búsqueda
+
+2. **Gestión de Clientes y Proveedores**
+   - Registro y actualización de información
+   - Historial de transacciones
+   - Sistema de contactos
+
+3. **Gestión de Compras**
+   - Registro de compras a proveedores
+   - Control de órdenes de compra
+   - Actualización automática de inventario
+
+4. **Dashboard/Panel de Control**
+   - Visualización de métricas clave
+   - Componentes personalizados (DatePicker, MenuContent)
+   - Reportes y estadísticas
+
+### Arquitectura de Comunicación
+
+El proyecto utiliza el patrón **IPC (Inter-Process Communication)** de Electron:
+- **Main Process**: Maneja la lógica de negocio, acceso a base de datos y operaciones del sistema
+- **Renderer Process**: Interfaz de usuario React aislada por seguridad
+- **Preload Scripts**: API segura para comunicación entre procesos
+
+---
+
+## 5. BASE DE DATOS
+
+### Tecnología: SQLite
+- Base de datos relacional embebida
+- No requiere servidor separado
+- Almacenamiento local en archivo único
+- Ideal para aplicaciones de escritorio
+
+### Estructura (según diagrama SQL)
+- Tablas principales para: productos, clientes, proveedores, compras, ventas, inventario
+- Relaciones definidas mediante claves foráneas
+- Esquema normalizado para integridad de datos
+
+---
+
+## 6. ESTADO ACTUAL DEL DESARROLLO
+
+### Rama Actual: `impleBDSqlLite`
+
+Indica que se está trabajando en la implementación de la base de datos SQLite.
+
+### Archivos Modificados Recientemente
+- [src/main/eventos.js](src/main/eventos.js): Gestión de eventos del sistema
+- [src/main/index.js](src/main/index.js): Configuración del proceso principal
+- [src/preload/index.js](src/preload/index.js): API de comunicación IPC
+- [src/renderer/src/App.jsx](src/renderer/src/App.jsx): Componente raíz
+- Componentes del dashboard (CustomDatePicker, MenuContent)
+
+### Archivos Nuevos (sin seguimiento)
+- [src/main/Controller/ComprasController.js](src/main/Controller/ComprasController.js): Controlador del módulo de compras
+- [src/main/handlers/compra-Handler.js](src/main/handlers/compra-Handler.js): Manejador IPC para compras
+- [src/renderer/view/compras.jsx](src/renderer/view/compras.jsx): Vista de compras
+
+### Commits Recientes
+- "funcionando el modulo de cliente-proveedores" - Módulo completado
+- "ARTICULO CRUD FUNCIONANDO CORREACTAMENE" - CRUD de artículos implementado
+- "Eliminando extencion de archivos" - Refactorización de imports
+
+---
+
+## 7. BUENAS PRÁCTICAS IMPLEMENTADAS
+
+- Control de versiones con Git
+- Configuración de linting y formateo automático
+- Separación clara de responsabilidades (MVC pattern)
+- Arquitectura modular con controladores y handlers
+- Configuración de entorno de desarrollo estandarizada
+
+---
+
+## 8. PRÓXIMOS PASOS SUGERIDOS
+
+1. Completar la migración a SQLite para todos los módulos
+2. Implementar módulo de ventas y facturación
+3. Agregar sistema de reportes y exportación de datos
+4. Implementar autenticación y gestión de usuarios
+5. Crear pruebas unitarias e integración
+6. Documentar API IPC y estructura de base de datos
+7. Preparar empaquetado para distribución
+
+---
+
+## 9. NOTAS IMPORTANTES
+
+- El proyecto utiliza **variables de entorno** (.env) que NO deben subirse al repositorio
+- Los archivos HTML decorativos (flores, tarjetas) parecen ser recursos personales no relacionados con la funcionalidad principal
+- La base de datos SQLite se almacenará localmente en cada instalación
+- Es importante mantener actualizado el esquema SQL cuando se modifique la estructura de datos
+
+---
+
+**Última actualización**: Octubre 2025
+**Versión del documento**: 2.0

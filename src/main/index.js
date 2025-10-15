@@ -9,6 +9,7 @@ import  runMigrations  from './DB/migrations'; // migraciones
 import {registerProductoHandlers} from './handlers/producto-Handler';
 import { registerProveedorHandlers } from './handlers/proveedor-Handler';
 import { registerClienteHandlers } from './handlers/cliente-Handler';
+import {registerCompraHandlers} from './handlers/compra-Handler'
 // import  setupIPCHandlers  from './eventos';
 
 // const setupIPCHandlers = require('./eventos');
@@ -69,6 +70,7 @@ app.whenReady().then(() => {
   registerProductoHandlers();
   registerProveedorHandlers();
   registerClienteHandlers();
+  registerCompraHandlers();
   // runMigrations();
   createWindow()
 

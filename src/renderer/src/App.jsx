@@ -23,6 +23,7 @@ import NotificarUsuario from '../view/alerta';
 import AppNavbar from './Extras/dashboard/components/AppNavbar';
 import Header from './Extras/dashboard/components/Header';
 import { CssBaseline } from '@mui/material';
+import { ComponenteCompras } from '../view/compras';
 
 const xThemeComponents = {
   ...chartsCustomizations,
@@ -78,6 +79,7 @@ export default function Dashboard(props) {
                   <Route path="/proveedor" element={<ComponenteProveedores />} />
                   <Route path="/alerta" element={<NotificarUsuario />} />
                   <Route path="/clientes" element={<ComponenteClientes />} />
+                  <Route path="/compras" element={<ComponenteCompras />} />
                 </Routes>
 
 

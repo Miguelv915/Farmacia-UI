@@ -49,7 +49,8 @@ const mainListItems = [
   { text: 'Artículos', icon: <AssignmentRoundedIcon />, to: '/articulo' },
   { text: 'Proveedores', icon: <BusinessRoundedIcon />, to: '/proveedor' },
   { text: 'Alertas', icon: <InfoRoundedIcon />, to: '/alerta' },
-  { text: 'Cleintes', icon: <InfoRoundedIcon />, to: '/clientes' },
+  { text: 'Clientes', icon: <InfoRoundedIcon />, to: '/clientes' },
+  { text: 'Compras', icon: <InfoRoundedIcon />, to: '/compras' },
 ];
 
 export default function MenuContent() {

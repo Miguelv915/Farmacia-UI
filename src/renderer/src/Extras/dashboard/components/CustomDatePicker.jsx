@@ -77,3 +77,28 @@ export default function CustomDatePicker() {
     </LocalizationProvider>
   );
 }
+
+export  function CustomDatePickerFecha({value,setValue}) {
+  // const [value, setValue] = React.useState(dayjs(value));
+  const [open, setOpen] = React.useState(false);
+
+  return (
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <DatePicker
+        value={value}
+        label={value == null ? null : value.format('MMM DD, YYYY')}
+        onChange={(newValue) => setValue(newValue)}
+        slots={{ field: ButtonField }}
+        slotProps={{
+          field: { setOpen },
+          nextIconButton: { size: 'small' },
+          previousIconButton: { size: 'small' },
+        }}
+        open={open}
+        onClose={() => setOpen(false)}
+        onOpen={() => setOpen(true)}
+        views={['day', 'month', 'year']}
+      />
+    </LocalizationProvider>
+  );
+}
