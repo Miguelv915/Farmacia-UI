@@ -13,7 +13,7 @@ import BusinessRoundedIcon from '@mui/icons-material/BusinessRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 // src/components/views/AnalyticsView.jsx
  function AnalyticsView() {
@@ -54,7 +54,8 @@ const mainListItems = [
 ];
 
 export default function MenuContent() {
-  // return <></>
+  const location = useLocation();
+
   return (
     <Stack sx={{ flexGrow: 1, p: 1, justifyContent: 'space-between' }}>
       <List dense>
@@ -63,7 +64,7 @@ export default function MenuContent() {
             <ListItemButton
               component={Link}
               to={item.to}
-              selected={index === 2}
+              selected={location.pathname === item.to}
             >
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
