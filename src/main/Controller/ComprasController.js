@@ -34,20 +34,33 @@ export function insertarCompra(compra) {
 
             const compraId = infoCompra.lastInsertRowid;
 
-            // Insertar los detalles de la compra
+            // Insertar los detalles de la compra y actualizar stock
             if (compra.detalles && compra.detalles.length > 0) {
                 const stmtDetalle = db.prepare(`
                     INSERT INTO detalle_compras (compra_id, producto_id, cantidad, precio_compra, subtotal)
                     VALUES (?, ?, ?, ?, ?)
                 `);
 
+                const stmtActualizarStock = db.prepare(`
+                    UPDATE producto
+                    SET cantidad_Stock = cantidad_Stock + ?
+                    WHERE id = ?
+                `);
+
                 for (const detalle of compra.detalles) {
+                    // Insertar detalle de compra
                     stmtDetalle.run(
                         compraId,
                         detalle.producto_id,
                         detalle.cantidad,
                         detalle.precio_compra,
                         detalle.subtotal
+                    );
+
+                    // Incrementar el stock del producto
+                    stmtActualizarStock.run(
+                        detalle.cantidad,
+                        detalle.producto_id
                     );
                 }
             }
@@ -62,7 +75,7 @@ export function insertarCompra(compra) {
     try {
         return transaction();
     } catch (error) {
-        console.error('Error en transacción de compra:', error);
+        console.error('Error en transacciï¿½n de compra:', error);
         return { success: false, error: error.message };
     }
 }
@@ -139,7 +152,29 @@ export function obtenerDetallesCompra(compraId) {
 export function eliminarCompra(id) {
     const transaction = db.transaction(() => {
         try {
-            // Primero eliminar los detalles
+            // Primero obtener los detalles para revertir el stock
+            const stmtObtenerDetalles = db.prepare(`
+                SELECT producto_id, cantidad
+                FROM detalle_compras
+                WHERE compra_id = ?
+            `);
+            const detalles = stmtObtenerDetalles.all(id);
+
+            // Revertir el stock de cada producto
+            const stmtRevertirStock = db.prepare(`
+                UPDATE producto
+                SET cantidad_Stock = cantidad_Stock - ?
+                WHERE id = ?
+            `);
+
+            for (const detalle of detalles) {
+                stmtRevertirStock.run(
+                    detalle.cantidad,
+                    detalle.producto_id
+                );
+            }
+
+            // Eliminar los detalles
             const stmtDetalles = db.prepare(`DELETE FROM detalle_compras WHERE compra_id = ?`);
             const resultDetalles = stmtDetalles.run(id);
 
@@ -161,7 +196,7 @@ export function eliminarCompra(id) {
     try {
         return transaction();
     } catch (error) {
-        console.error('Error en transacción de eliminación:', error);
+        console.error('Error en transacciï¿½n de eliminaciï¿½n:', error);
         return { success: false, error: error.message };
     }
 }
@@ -169,6 +204,28 @@ export function eliminarCompra(id) {
 export function actualizarCompra(compra) {
     const transaction = db.transaction(() => {
         try {
+            // Primero obtener los detalles antiguos para revertir el stock
+            const stmtObtenerDetallesAntiguos = db.prepare(`
+                SELECT producto_id, cantidad
+                FROM detalle_compras
+                WHERE compra_id = ?
+            `);
+            const detallesAntiguos = stmtObtenerDetallesAntiguos.all(compra.id);
+
+            // Revertir el stock de los detalles antiguos
+            const stmtRevertirStock = db.prepare(`
+                UPDATE producto
+                SET cantidad_Stock = cantidad_Stock - ?
+                WHERE id = ?
+            `);
+
+            for (const detalle of detallesAntiguos) {
+                stmtRevertirStock.run(
+                    detalle.cantidad,
+                    detalle.producto_id
+                );
+            }
+
             // Actualizar la compra principal
             const stmtCompra = db.prepare(`
                 UPDATE compras
@@ -187,20 +244,33 @@ export function actualizarCompra(compra) {
             const stmtEliminarDetalles = db.prepare(`DELETE FROM detalle_compras WHERE compra_id = ?`);
             stmtEliminarDetalles.run(compra.id);
 
-            // Insertar nuevos detalles
+            // Insertar nuevos detalles y actualizar stock
             if (compra.detalles && compra.detalles.length > 0) {
                 const stmtDetalle = db.prepare(`
                     INSERT INTO detalle_compras (compra_id, producto_id, cantidad, precio_compra, subtotal)
                     VALUES (?, ?, ?, ?, ?)
                 `);
 
+                const stmtActualizarStock = db.prepare(`
+                    UPDATE producto
+                    SET cantidad_Stock = cantidad_Stock + ?
+                    WHERE id = ?
+                `);
+
                 for (const detalle of compra.detalles) {
+                    // Insertar nuevo detalle
                     stmtDetalle.run(
                         compra.id,
                         detalle.producto_id,
                         detalle.cantidad,
                         detalle.precio_compra,
                         detalle.subtotal
+                    );
+
+                    // Incrementar el stock con la nueva cantidad
+                    stmtActualizarStock.run(
+                        detalle.cantidad,
+                        detalle.producto_id
                     );
                 }
             }
@@ -215,12 +285,12 @@ export function actualizarCompra(compra) {
     try {
         return transaction();
     } catch (error) {
-        console.error('Error en transacción de actualización:', error);
+        console.error('Error en transacciï¿½n de actualizaciï¿½n:', error);
         return { success: false, error: error.message };
     }
 }
 
-// Función auxiliar para obtener proveedores (para dropdowns)
+// Funciï¿½n auxiliar para obtener proveedores (para dropdowns)
 export function listarProveedores() {
     try {
         const stmt = db.prepare(`
@@ -237,7 +307,7 @@ export function listarProveedores() {
     }
 }
 
-// Función auxiliar para obtener productos (para dropdowns)
+// Funciï¿½n auxiliar para obtener productos (para dropdowns)
 export function listarProductos() {
     try {
         const stmt = db.prepare(`

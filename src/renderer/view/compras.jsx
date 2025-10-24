@@ -441,21 +441,21 @@ export function ComponenteCompras() {
             />
 
             <Box
-                sx={{
-                    height: 400,
-                    width: '100%',
-                    '& .MuiDataGrid-root': {
-                        border: '1px solid #e5e7eb',
-                        borderRadius: '8px',
-                    },
-                    '& .MuiDataGrid-columnHeaders': {
-                        backgroundColor: '#f9fafb',
-                        borderBottom: '1px solid #e5e7eb',
-                    },
-                    '& .MuiDataGrid-row:hover': {
-                        backgroundColor: '#f9fafb',
-                    },
-                }}
+                // sx={{
+                //     height: 400,
+                //     width: '100%',
+                //     '& .MuiDataGrid-root': {
+                //         border: '1px solid #e5e7eb',
+                //         borderRadius: '8px',
+                //     },
+                //     '& .MuiDataGrid-columnHeaders': {
+                //         backgroundColor: '#f9fafb',
+                //         borderBottom: '1px solid #e5e7eb',
+                //     },
+                //     '& .MuiDataGrid-row:hover': {
+                //         backgroundColor: '#f9fafb',
+                //     },
+                // }}
             >
                 <DataGrid
                     checkboxSelection
@@ -552,7 +552,7 @@ function ModalFormularioCompra({ open, onClose, onSave, formData, onChange, setF
 
     React.useEffect(() => {
         if (formData.fecha) {
-            setValue(dayjs(formData.fecha));
+            // setValue(dayjs(formData.fecha));
         }
     }, [formData.fecha]);
 
@@ -614,7 +614,7 @@ function ModalFormularioCompra({ open, onClose, onSave, formData, onChange, setF
                         </Box>
 
                         {formData.detalles?.map((detalle, index) => (
-                            <Box key={index} sx={{ border: '1px solid #e5e7eb', borderRadius: 1, p: 2, mb: 2 }}>
+                            <Box key={index} sx={{ border: '1px solid #666769ff', borderRadius: 1, p: 2, mb: 2 }}>
                                 <Grid container spacing={2} alignItems="center">
                                     <FormGrid size={{ xs: 12, md: 4 }}>
                                         <FormLabel>Producto</FormLabel>
