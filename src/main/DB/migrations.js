@@ -165,9 +165,20 @@ CREATE TABLE IF NOT EXISTS detalle_ventas (
 );
 `);
 
+// Migración: Agregar columna cliente_id a la tabla venta si no existe
+try {
+  const checkColumn = db.prepare(`PRAGMA table_info(venta)`).all();
+  const hasClienteId = checkColumn.some(col => col.name === 'cliente_id');
 
-
-
+  if (!hasClienteId) {
+    db.exec(`
+      ALTER TABLE venta ADD COLUMN cliente_id INTEGER;
+    `);
+    console.log('Columna cliente_id agregada a la tabla venta');
+  }
+} catch (error) {
+  console.error('Error al agregar columna cliente_id:', error);
+}
 
 }
 

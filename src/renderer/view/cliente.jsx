@@ -264,21 +264,21 @@ export function ComponenteClientes() {
             />
 
             <Box
-                sx={{
-                    height: 400,
-                    width: '100%',
-                    '& .MuiDataGrid-root': {
-                        border: '1px solid #e5e7eb',
-                        borderRadius: '8px',
-                    },
-                    '& .MuiDataGrid-columnHeaders': {
-                        backgroundColor: '#f9fafb',
-                        borderBottom: '1px solid #e5e7eb',
-                    },
-                    '& .MuiDataGrid-row:hover': {
-                        backgroundColor: '#f9fafb',
-                    },
-                }}
+                // sx={{
+                //     height: 400,
+                //     width: '100%',
+                //     '& .MuiDataGrid-root': {
+                //         border: '1px solid #e5e7eb',
+                //         borderRadius: '8px',
+                //     },
+                //     '& .MuiDataGrid-columnHeaders': {
+                //         backgroundColor: '#f9fafb',
+                //         borderBottom: '1px solid #e5e7eb',
+                //     },
+                //     '& .MuiDataGrid-row:hover': {
+                //         backgroundColor: '#f9fafb',
+                //     },
+                // }}
             >
                 <DataGrid
                     checkboxSelection

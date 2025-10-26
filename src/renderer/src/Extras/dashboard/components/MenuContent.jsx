@@ -13,6 +13,8 @@ import BusinessRoundedIcon from '@mui/icons-material/BusinessRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
+import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
+import PointOfSaleRoundedIcon from '@mui/icons-material/PointOfSaleRounded';
 import { Link, useLocation } from 'react-router-dom';
 
 // src/components/views/AnalyticsView.jsx
@@ -48,9 +50,10 @@ const mainListItems = [
   { text: 'Dashboard', icon: <HomeRoundedIcon />, to: '/' },
   { text: 'Artículos', icon: <AssignmentRoundedIcon />, to: '/articulo' },
   { text: 'Proveedores', icon: <BusinessRoundedIcon />, to: '/proveedor' },
+  { text: 'Clientes', icon: <PeopleRoundedIcon />, to: '/clientes' },
+  { text: 'Compras', icon: <ShoppingCartRoundedIcon />, to: '/compras' },
+  { text: 'Ventas', icon: <PointOfSaleRoundedIcon />, to: '/ventas' },
   { text: 'Alertas', icon: <InfoRoundedIcon />, to: '/alerta' },
-  { text: 'Clientes', icon: <InfoRoundedIcon />, to: '/clientes' },
-  { text: 'Compras', icon: <InfoRoundedIcon />, to: '/compras' },
 ];
 
 export default function MenuContent() {

@@ -24,6 +24,7 @@ import AppNavbar from './Extras/dashboard/components/AppNavbar';
 import Header from './Extras/dashboard/components/Header';
 import { CssBaseline } from '@mui/material';
 import { ComponenteCompras } from '../view/compras';
+import { ComponenteVentas } from '../view/ventas';
 
 const xThemeComponents = {
   ...chartsCustomizations,
@@ -80,6 +81,7 @@ export default function Dashboard(props) {
                   <Route path="/alerta" element={<NotificarUsuario />} />
                   <Route path="/clientes" element={<ComponenteClientes />} />
                   <Route path="/compras" element={<ComponenteCompras />} />
+                  <Route path="/ventas" element={<ComponenteVentas />} />
                 </Routes>
 
 

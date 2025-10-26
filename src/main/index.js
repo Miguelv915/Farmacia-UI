@@ -9,7 +9,8 @@ import  runMigrations  from './DB/migrations'; // migraciones
 import {registerProductoHandlers} from './handlers/producto-Handler';
 import { registerProveedorHandlers } from './handlers/proveedor-Handler';
 import { registerClienteHandlers } from './handlers/cliente-Handler';
-import {registerCompraHandlers} from './handlers/compra-Handler'
+import {registerCompraHandlers} from './handlers/compra-Handler';
+import {registerVentaHandlers} from './handlers/venta-Handler'
 // import  setupIPCHandlers  from './eventos';
 
 // const setupIPCHandlers = require('./eventos');
@@ -71,6 +72,7 @@ app.whenReady().then(() => {
   registerProveedorHandlers();
   registerClienteHandlers();
   registerCompraHandlers();
+  registerVentaHandlers();
   // runMigrations();
   createWindow()
 
