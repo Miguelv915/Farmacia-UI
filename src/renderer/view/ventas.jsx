@@ -674,7 +674,25 @@ function ModalFormularioVenta({ open, onClose, onSave, formData, onChange, setFo
                                             <OutlinedInput
                                                 type="number"
                                                 value={detalle.cantidad}
-                                                onChange={(e) => actualizarDetalle(index, 'cantidad', parseFloat(e.target.value) || 0)}
+                                                onChange={(e) => {
+                                                    const valor = e.target.value;
+                                                    // Si está vacío, permitir vacío temporalmente para que el usuario pueda escribir
+                                                    if (valor === '') {
+                                                        actualizarDetalle(index, 'cantidad', '');
+                                                    } else {
+                                                        // Convertir a entero para eliminar ceros a la izquierda
+                                                        const numero = parseInt(valor, 10);
+                                                        if (!isNaN(numero) && numero >= 1) {
+                                                            actualizarDetalle(index, 'cantidad', numero);
+                                                        }
+                                                    }
+                                                }}
+                                                onBlur={(e) => {
+                                                    // Al perder el foco, si está vacío o es 0, establecer 1
+                                                    if (e.target.value === '' || e.target.value === '0') {
+                                                        actualizarDetalle(index, 'cantidad', 1);
+                                                    }
+                                                }}
                                                 size="small"
                                                 inputProps={{ min: 1, max: stockDisponible }}
                                             />
