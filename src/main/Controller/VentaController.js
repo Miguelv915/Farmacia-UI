@@ -154,42 +154,54 @@ export function insertarVenta(venta) {
 //   ]
 // })
 
-export function listarVentas() {
+export function listarVentas(fechaDesde = null, fechaHasta = null) {
     try {
-        // Asegurar que la columna cliente_id existe
-        verificarYAgregarClienteId();
+        // // Asegurar que la columna cliente_id existe
+        // verificarYAgregarClienteId();
 
-        // Verificar si la tabla venta tiene la columna cliente_id
-        const checkColumnStmt = db.prepare(`PRAGMA table_info(venta)`);
-        const columns = checkColumnStmt.all();
-        const hasClienteId = columns.some(col => col.name === 'cliente_id');
+        // // Verificar si la tabla venta tiene la columna cliente_id
+        // const checkColumnStmt = db.prepare(`PRAGMA table_info(venta)`);
+        // const columns = checkColumnStmt.all();
+        // const hasClienteId = columns.some(col => col.name === 'cliente_id');
 
-        let stmt;
-        if (hasClienteId) {
-            stmt = db.prepare(`
-                SELECT
-                    v.idVenta as "id",
-                    v.cliente_id,
-                    c.nombre as "cliente_nombre",
-                    v.fecha,
-                    v.total
-                FROM venta v
-                LEFT JOIN Cliente c ON v.cliente_id = c.idCliente
-                ORDER BY v.fecha DESC
-            `);
-        } else {
-            stmt = db.prepare(`
-                SELECT
-                    v.idVenta as "id",
-                    v.fecha,
-                    v.total
-                FROM venta v
-                ORDER BY v.fecha DESC
-            `);
+        // Construir SQL base
+        let sql = `
+            SELECT
+                v.idVenta as "id",
+                v.cliente_id,
+                c.nombre as "cliente_nombre",
+                v.fecha,
+                v.total
+            FROM venta v
+            LEFT JOIN Cliente c ON v.cliente_id = c.idCliente
+        `;
+
+        // Agregar filtros de fecha si se proporcionan
+        const whereConditions = [];
+        const params = [];
+
+        if (fechaDesde) {
+            whereConditions.push(`DATE(v.fecha) >= ?`);
+            params.push(fechaDesde);
         }
 
-        const ventas = stmt.all();
+        if (fechaHasta) {
+            whereConditions.push(`DATE(v.fecha) <= ?`);
+            params.push(fechaHasta);
+        }
+
+        if (whereConditions.length > 0) {
+            sql += ` WHERE ${whereConditions.join(' AND ')}`;
+        }
+
+        sql += ` ORDER BY v.fecha DESC`;
+
+        console.log("Ejecutando SQL:", sql, "con parámetros:", params);
+        const stmt = db.prepare(sql);
+        const ventas = stmt.all(...params);
+
         console.log("Ventas obtenidas:", ventas);
+        console.log("Filtros aplicados - Desde:", fechaDesde, "Hasta:", fechaHasta);
 
         return { success: true, data: ventas };
     } catch (error) {

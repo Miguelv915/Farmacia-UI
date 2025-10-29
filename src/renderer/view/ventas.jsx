@@ -12,6 +12,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import ReceiptIcon from '@mui/icons-material/Receipt';
 import {
     Button,
     Modal,
@@ -22,6 +24,7 @@ import {
 } from '@mui/material';
 import dayjs from 'dayjs';
 import CustomDatePickerFecha from '../src/Extras/dashboard/components/CustomDatePicker';
+import { generarBoletaPDF, generarTicketPDF } from '../src/utils/pdfGenerator';
 
 const FormGrid = styled(Grid)(() => ({
     display: 'flex',
@@ -70,9 +73,11 @@ const funBD_editarVenta = async (data) => {
     }
 }
 
-const funBD_listarVentas = async () => {
+const funBD_listarVentas = async (fechaDesde = null, fechaHasta = null) => {
     try {
-        const res = await window.api.ventas.listar();
+        console.log(fechaDesde, fechaHasta);
+        
+        const res = await window.api.ventas.listar(fechaDesde, fechaHasta);
         console.log("Listando ventas:", res);
 
         if (res.success) {
@@ -149,6 +154,10 @@ export function ComponenteVentas() {
     const [clientes, setClientes] = useState([]);
     const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
 
+    // Estados para filtro de fechas
+    const [fechaDesde, setFechaDesde] = useState(dayjs());
+    const [fechaHasta, setFechaHasta] = useState(dayjs());
+//  const [value, setValue] = React.useState(dayjs());
     function renderStatus(status) {
         const colors = {
             Completada: 'success',
@@ -160,7 +169,15 @@ export function ComponenteVentas() {
     }
 
     async function listarVentas() {
-        const result = await funBD_listarVentas();
+        // Formatear fechas si existen
+        console.log(fechaDesde);
+        
+        const fechaDesdeStr = fechaDesde ? dayjs(fechaDesde).format('YYYY-MM-DD') : null;
+        const fechaHastaStr = fechaHasta ? dayjs(fechaHasta).format('YYYY-MM-DD') : null;
+
+        console.log("impresion de fechas",fechaHastaStr,fechaDesdeStr);
+        
+        const result = await funBD_listarVentas(fechaDesdeStr, fechaHastaStr);
 
         if (result.success) {
             const newVentas = result.data.map(item => {
@@ -175,6 +192,11 @@ export function ComponenteVentas() {
             });
         }
     }
+
+    const limpiarFiltros = () => {
+        setFechaDesde(null);
+        setFechaHasta(null);
+    };
 
     async function cargarProductos() {
         const productosList = await funBD_listarProductos();
@@ -417,28 +439,70 @@ export function ComponenteVentas() {
                 Gestión de Ventas
             </Typography>
 
-            <Box mb={2} display="flex" justifyContent="flex-end" gap={1}>
-                <Button
-                    variant="contained"
-                    onClick={handleNuevo}
-                    sx={{
-                        backgroundColor: '#6b7280',
-                        '&:hover': { backgroundColor: '#4b5563' }
-                    }}
-                >
-                    Nueva Venta
-                </Button>
+            {/* Filtros de fecha */}
+            <Box mb={2} display="flex" justifyContent="space-between" alignItems="center" gap={2}>
+                <Box display="flex" gap={2} alignItems="center">
+                    <Box>
+                        <FormLabel sx={{ fontSize: '0.875rem', mb: 0.5, display: 'block' }}>
+                            Fecha Desde
+                        </FormLabel>
+                        <CustomDatePickerFecha
+                            value={fechaDesde}
+                            setValue={setFechaDesde}
+                        />
+                    </Box>
+                    <Box>
+                        <FormLabel sx={{ fontSize: '0.875rem', mb: 0.5, display: 'block' }}>
+                            Fecha Hasta
+                        </FormLabel>
+                        <CustomDatePickerFecha
+                            value={fechaHasta}
+                            setValue={setFechaHasta}
+                        />
+                    </Box>
+                    <Button
+                        variant="outlined"
+                        size="small"
+                        onClick={limpiarFiltros}
+                        sx={{
+                            marginTop: '20px',
+                            borderColor: '#6b7280',
+                            color: '#6b7280',
+                            '&:hover': {
+                                backgroundColor: '#f9fafb',
+                                borderColor: '#4b5563'
+                            }
+                        }}
+                    >
+                        Limpiar
+                    </Button>
+                </Box>
 
-                <Button
-                    variant="contained"
-                    onClick={listarVentas}
-                    sx={{
-                        backgroundColor: '#6b7280',
-                        '&:hover': { backgroundColor: '#4b5563' }
-                    }}
-                >
-                    Listar Ventas
-                </Button>
+                <Box display="flex" gap={1}>
+                    <Button
+                        size="small"
+                        variant="contained"
+                        onClick={handleNuevo}
+                        sx={{
+                            backgroundColor: '#6b7280',
+                            '&:hover': { backgroundColor: '#4b5563' }
+                        }}
+                    >
+                        Nueva Venta
+                    </Button>
+
+                    <Button
+                        variant="contained"
+                        size="small"
+                        onClick={listarVentas}
+                        sx={{
+                            backgroundColor: '#6b7280',
+                            '&:hover': { backgroundColor: '#4b5563' }
+                        }}
+                    >
+                        Filtrar / Listar
+                    </Button>
+                </Box>
             </Box>
 
             <ModalFormularioVenta
@@ -892,7 +956,35 @@ function ModalDetallesVenta({ open, onClose, venta }) {
                     </Box>
                 </Box>
 
-                <Box display="flex" justifyContent="flex-end" mt={3}>
+                <Box display="flex" justifyContent="space-between" alignItems="center" mt={3}>
+                    <Box display="flex" gap={2}>
+                        <Button
+                            variant="contained"
+                            startIcon={<PictureAsPdfIcon />}
+                            onClick={() => generarBoletaPDF(venta)}
+                            sx={{
+                                backgroundColor: '#dc2626',
+                                '&:hover': { backgroundColor: '#b91c1c' }
+                            }}
+                        >
+                            Generar Boleta
+                        </Button>
+                        <Button
+                            variant="outlined"
+                            startIcon={<ReceiptIcon />}
+                            onClick={() => generarTicketPDF(venta)}
+                            sx={{
+                                borderColor: '#dc2626',
+                                color: '#dc2626',
+                                '&:hover': {
+                                    backgroundColor: '#fef2f2',
+                                    borderColor: '#b91c1c'
+                                }
+                            }}
+                        >
+                            Generar Ticket
+                        </Button>
+                    </Box>
                     <Button variant="contained" onClick={onClose}>
                         Cerrar
                     </Button>

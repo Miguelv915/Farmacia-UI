@@ -44,7 +44,7 @@ const api = {
 
   ventas: {
     insertar: (data) => ipcRenderer.invoke('insertar-venta', data),
-    listar: () => ipcRenderer.invoke('listar-ventas'),
+    listar: (fechaDesde, fechaHasta) => ipcRenderer.invoke('listar-ventas', fechaDesde, fechaHasta),
     obtenerDetalles: (id) => ipcRenderer.invoke('obtener-detalles-venta', id),
     eliminar: (id) => ipcRenderer.invoke('eliminar-venta', id),
     actualizar: (data) => ipcRenderer.invoke('actualizar-venta', data),

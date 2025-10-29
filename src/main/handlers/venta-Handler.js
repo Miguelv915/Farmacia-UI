@@ -21,9 +21,9 @@ export function registerVentaHandlers() {
         }
     });
 
-    ipcMain.handle('listar-ventas', async () => {
+    ipcMain.handle('listar-ventas', async (_event, fechaDesde, fechaHasta) => {
         try {
-            const ventas = listarVentas();
+            const ventas = listarVentas(fechaDesde, fechaHasta);
             return ventas;
         } catch (error) {
             console.error('Error al listar ventas:', error);
