@@ -25,6 +25,8 @@ import {
 import dayjs from 'dayjs';
 import CustomDatePickerFecha from '../src/Extras/dashboard/components/CustomDatePicker';
 import { generarBoletaPDF, generarTicketPDF } from '../src/utils/pdfGenerator';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 const FormGrid = styled(Grid)(() => ({
     display: 'flex',
@@ -170,13 +172,16 @@ export function ComponenteVentas() {
 
     async function listarVentas() {
         // Formatear fechas si existen
-        console.log(fechaDesde);
-        
-        const fechaDesdeStr = fechaDesde ? dayjs(fechaDesde).format('YYYY-MM-DD') : null;
-        const fechaHastaStr = fechaHasta ? dayjs(fechaHasta).format('YYYY-MM-DD') : null;
+        console.log("fechaDesde objeto:",fechaDesde);
+        console.log("fechaHasta objeto:", fechaHasta);
+        console.log("¿fechaDesde es dayjs?", dayjs.isDayjs(fechaDesde));
+        console.log("¿fechaHasta es dayjs?", dayjs.isDayjs(fechaHasta));
 
-        console.log("impresion de fechas",fechaHastaStr,fechaDesdeStr);
-        
+        const fechaDesdeStr = fechaDesde ? fechaDesde.format('YYYY-MM-DD') : null;
+        const fechaHastaStr = fechaHasta ? fechaHasta.format('YYYY-MM-DD') : null;
+
+        console.log("Fechas formateadas - Desde:",fechaDesdeStr, "Hasta:", fechaHastaStr);
+
         const result = await funBD_listarVentas(fechaDesdeStr, fechaHastaStr);
 
         if (result.success) {
@@ -194,9 +199,20 @@ export function ComponenteVentas() {
     }
 
     const limpiarFiltros = () => {
+        console.log("Limpiando filtros...");
+        setDataList([]);
         setFechaDesde(null);
         setFechaHasta(null);
     };
+
+    // Debug: Monitorear cambios en las fechas
+    React.useEffect(() => {
+        console.log("fechaDesde cambió a:", fechaDesde);
+    }, [fechaDesde]);
+
+    React.useEffect(() => {
+        console.log("fechaHasta cambió a:", fechaHasta);
+    }, [fechaHasta]);
 
     async function cargarProductos() {
         const productosList = await funBD_listarProductos();
@@ -446,19 +462,37 @@ export function ComponenteVentas() {
                         <FormLabel sx={{ fontSize: '0.875rem', mb: 0.5, display: 'block' }}>
                             Fecha Desde
                         </FormLabel>
-                        <CustomDatePickerFecha
-                            value={fechaDesde}
-                            setValue={setFechaDesde}
-                        />
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DatePicker
+                                value={fechaDesde}
+                                onChange={(newValue) => {
+                                    console.log("Fecha Desde cambiada a:", newValue);
+                                    setFechaDesde(newValue);
+                                }}
+                                format="YYYY-MM-DD"
+                                slotProps={{
+                                    textField: { size: 'small' }
+                                }}
+                            />
+                        </LocalizationProvider>
                     </Box>
                     <Box>
                         <FormLabel sx={{ fontSize: '0.875rem', mb: 0.5, display: 'block' }}>
                             Fecha Hasta
                         </FormLabel>
-                        <CustomDatePickerFecha
-                            value={fechaHasta}
-                            setValue={setFechaHasta}
-                        />
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DatePicker
+                                value={fechaHasta}
+                                onChange={(newValue) => {
+                                    console.log("Fecha Hasta cambiada a:", newValue);
+                                    setFechaHasta(newValue);
+                                }}
+                                format="YYYY-MM-DD"
+                                slotProps={{
+                                    textField: { size: 'small' }
+                                }}
+                            />
+                        </LocalizationProvider>
                     </Box>
                     <Button
                         variant="outlined"

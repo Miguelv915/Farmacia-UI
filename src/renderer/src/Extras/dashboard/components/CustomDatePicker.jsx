@@ -54,7 +54,7 @@ ButtonField.propTypes = {
 };
 
 export default function CustomDatePicker() {
-  const [value, setValue] = React.useState(dayjs('2023-04-17'));
+  const [value, setValue] = React.useState(dayjs(new Date()));
   const [open, setOpen] = React.useState(false);
 
   return (
@@ -82,12 +82,18 @@ export  function CustomDatePickerFecha({value,setValue}) {
   // const [value, setValue] = React.useState(dayjs(value));
   const [open, setOpen] = React.useState(false);
 
+  const handleChange = (newValue) => {
+    console.log("CustomDatePickerFecha - onChange llamado con:", newValue);
+    console.log("CustomDatePickerFecha - Fecha formateada:", newValue ? newValue.format('YYYY-MM-DD') : null);
+    setValue(newValue);
+  };
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DatePicker
         value={value}
-        label={value == null ? null : value.format('MMM DD, YYYY')}
-        onChange={(newValue) => setValue(newValue)}
+        label={value == null ? null : value.format('YYYY-MM-DD')}
+        onChange={handleChange}
         slots={{ field: ButtonField }}
         slotProps={{
           field: { setOpen },
@@ -97,7 +103,7 @@ export  function CustomDatePickerFecha({value,setValue}) {
         open={open}
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
-        views={['day', 'month', 'year']}
+        // views={['day', 'month', 'year']}
       />
     </LocalizationProvider>
   );

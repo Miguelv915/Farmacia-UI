@@ -29,7 +29,7 @@ export function insertarProducto(producto) {
 export function listarProductos() {
     try {
       const stmt = db.prepare(`
-        SELECT id, nombre, descripcion, precio_compra, precio_venta, cantidad_Stock
+        SELECT id, nombre, descripcion, precio_compra, precio_venta, CAST(cantidad_Stock AS INT)  as   cantidad_Stock
         FROM producto
       `);
   
