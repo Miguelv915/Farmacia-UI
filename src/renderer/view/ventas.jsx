@@ -760,7 +760,16 @@ function ModalFormularioVenta({ open, onClose, onSave, formData, onChange, setFo
                                                 >
                                                     {productos.map((producto) => (
                                                         <MenuItem key={producto.id} value={producto.id}>
-                                                            {producto.nombre} (Stock: {producto.stock})
+                                                            <Box>
+                                                                <Typography variant="body2" fontWeight="500">
+                                                                    {producto.nombre} <span style={{ color: '#6b7280', fontSize: '0.875rem' }}>(Stock: {producto.stock})</span>
+                                                                </Typography>
+                                                                {producto.descripcion && (
+                                                                    <Typography variant="caption" color="text.secondary" display="block">
+                                                                        {producto.descripcion}
+                                                                    </Typography>
+                                                                )}
+                                                            </Box>
                                                         </MenuItem>
                                                     ))}
                                                 </Select>

@@ -438,6 +438,7 @@ export function listarTodosProductosVenta() {
             SELECT
                 id,
                 nombre,
+                descripcion,
                 precio_venta as "precio",
                 cantidad_Stock as "stock"
             FROM producto
